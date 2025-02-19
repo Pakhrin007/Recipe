@@ -14,13 +14,13 @@ function SignUp() {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen mt-10">
       {/* Left Side - Form */}
       <div className="w-1/2 flex items-center justify-center bg-white p-[10px]">
         <div className="w-[550px]">
           {/* Logo */}
           <div className="flex justify-center mb-[40px]">
-          <h1 className="text-4xl font-bold text-center font-rocksalt text-[#BE1E1E] text-[20px]">RecipeHut</h1>
+          <h1 className="text-[20px] text-center text-[#BE1E1E]">RecipeHut</h1>
           </div>
 
           {/* Welcome Text */}

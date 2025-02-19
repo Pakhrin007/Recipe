@@ -8,22 +8,18 @@ function Login() {
     password: '',
   });
 
-
-
-
-
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen mt-10">
       {/* Left Side - Form */}
       <div className="w-1/2 flex items-center justify-center bg-white p-[10px]">
         <div className="w-[550px]">
           {/* Logo */}
           <div className="flex justify-center mb-[40px]">
-            <h1 className="text-4xl font-bold text-center font-rock text-[#BE1E1E]">RecipeHut</h1>
+            <h1 className="text-[20px] text-center font-rock text-[#BE1E1E]">RecipeHut</h1>
           </div>
 
           {/* Welcome Text */}
-          <h2 className="text-[22.2px] font-bold mb-[8px] text-center">Welcomeback?</h2>
+          <h2 className="text-[22.2px]  mb-[8px] text-center">Welcomeback?</h2>
           <p className="text-gray-600 text-[14px] mb-[24px] text-center">
             The Faster you Fill up, the Faster you get a ticket
           </p>
