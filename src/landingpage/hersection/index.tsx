@@ -4,7 +4,7 @@ import leaves from "../../assets/images/leaves.png"
 import chilly from "../../assets/images/chilly.png"
 function HeroSection() {
     return (
-        <div className="mt-[40px] ml-[160px] w-[1260px] h-[650px] flex py-[20px] bg-[#FFFFFF]">
+        <div className="mt-[100px] ml-[160px] w-[1260px] h-[650px] flex py-[20px] bg-[#FFFFFF]">
             <div className="w-[600px] h-[500px] flex flex-col px-[30px] space-y-[20px]">
                 {/* First Paragraph */}
                 <p className="text-[80px] font-semibold text-black m-0 p-0">Cook</p>

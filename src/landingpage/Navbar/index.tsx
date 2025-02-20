@@ -1,21 +1,19 @@
 import { Link } from 'react-router-dom';
-import HeroSection from '../hersection';
-import Login from '../loginPage';
-import SignUp from '../signupPage/SignUp';
+;
 
 const Navbar = () => {
   return (
-    <nav className="left-1/2 transform -translate-x-1/2  max-w-[1120px]  fixed w-[1120px] z-10 px-[24px] py-[16px] mt-[16px] ">
+    <nav className="left-1/2 transform -translate-x-1/2  max-w-[1120px]  fixed w-[1120px] px-[24px] py-[16px] mt-[16px] z-50 ">
       
         <div className="flex justify-between items-center h-16 ">
           {/* Logo */}
-          <Link to="/HeroSection" className="flex items-center">
+          <Link to="/Home" className="flex items-center">
             <h1 className="text-[20px] font-rock text-[#BE1E1E]">RecipeHut</h1>
           </Link>
 
           {/* Navigation Links */}
           <div className="hidden md:flex items-center space-x-[46px]">
-            <Link to="/HeroSection" className="text-[#000000] text-[14px] font-medium">Home</Link>
+            <Link to="/Home" className="text-[#000000] text-[14px] font-medium">Home</Link>
             <Link to="/about" className="text-[#000000] text-[14px] font-medium">About</Link>
             <Link to="/recipes" className="text-[#000000] text-[14px] font-medium">Recipes</Link>
             <Link to="/blog" className="text-[#000000] text-[14px] font-medium">Blog</Link>
