@@ -1,8 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
-import Navbar from './landingpage/Navbar';
+import Navbar from './landingpage/navbar';
 import Login from './landingpage/loginPage';
 import SignUp from './landingpage/signupPage/SignUp';
-import HeroSection from './landingpage/hersection';
+import HeroSection from './landingpage/herosection';
+import "typeface-rock-salt" // typeface for rock salt font
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
 
 function MainContent() {
   const location = useLocation();
-  const hideNavbarRoutes = ['/login', '/signup']; // Hide Navbar for login & signup
+  const hideNavbarRoutes = ['/login', '/signup']; 
 
   return (
     <div className="min-h-screen flex flex-col">

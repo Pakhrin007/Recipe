@@ -1,5 +1,3 @@
-
-
 /**
  * 
  *  @type {import('tailwindcss').Config} */
@@ -11,8 +9,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-          'poppins': ['Poppins', 'sans-serif'],
-          'rock': ['"Rock Salt"', 'cursive'],
+          poppins: ['Poppins', 'sans-serif'],
+          cedarville: ['"Cedarville Cursive"', 'cursive'],
+          rock: ['"Rock Salt"', 'cursive'],
       },
     },  
   },

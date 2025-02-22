@@ -10,7 +10,7 @@ function Login() {
         <div className="w-[550px] p-10 rounded-lg shadow-md bg-white">
           {/* Logo */}
           <div className="flex justify-center mb-[40px]">
-            <h1 className="text-[20px] text-center font-rock text-[#BE1E1E] font-poppins">RecipeHut</h1>
+            <h1 className="text-[20px] text-center font-rock text-[#BE1E1E]">RecipeHut</h1>
           </div>
 
           {/* Welcome Text */}
