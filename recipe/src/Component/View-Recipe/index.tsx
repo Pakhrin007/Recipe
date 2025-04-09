@@ -1,4 +1,5 @@
 import ChevronLeftIcon from "../../assets/icons/ChevLeftIcon";
+import chef from "../../assets/Images/chef.png"
 
 interface ViewRecipeProps {
     LoveImage: string;
@@ -91,40 +92,80 @@ const ViewRecipe = ({
           
             </div>
             {/* -----------------description----------------- */}
-            <div className="bg-gray-200 p-[20px] w-[95.8%]">
+            <div className="bg-gray-100 rounded-[31px] p-[20px] w-[95.8%]">
                 <p className="text-poppins text-[18px] leading-[24px]">{Description}</p>
+            </div>
+            {/* --------------------Tags-------------------- */}
+
+            <div className="bg-gray-100 rounded-[31px] p-[20px] w-[95.8%] gap-y-2">
+                <h1 className="text-[20px] leading-[24px] font-medium text-[#FF1313]">Tags:</h1>
+                <div className="flex gap-x-2">
+                    {tags.map((tag, index) => (
+                        <p key={index} className="text-[18px] leading-[24px]">{tag}</p>
+                ))}
+                </div>
             </div>
 
             <div>
-               
+                   {/* ---------------------Ingredients and Nutritional Info--------------------- */}
+            <div className="flex gap-x-4">
+                {/* Ingredients */}
+                <div className="bg-white p-4 rounded-lg shadow-md w-full md:w-1/2">
+                    <h2 className="text-red-500 text-xl font-bold mb-2">Ingredients:</h2>
+                    <ul className="list-disc pl-5">
+                        {ingredients.map((ingredient, index) => (
+                            <li key={index} className="text-base leading-6">
+                                {ingredient}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
 
-                <h1>Tags:</h1>
-                <ul>
-                    {tags.map((tag, index) => (
-                        <li key={index}>{tag}</li>
-                    ))}
-                </ul>
+                {/* Nutritional Info */}
+                <div className="bg-white p-4 rounded-lg shadow-md w-full md:w-1/2">
+                    <h2 className="text-red-500 text-xl font-bold mb-2">Nutritional Info:</h2>
+                    <ul className="list-none pl-5">
+                        {NutritionalInfo.map((info, index) => (
+                            <li key={index} className="text-base leading-6">
+                                {info}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            </div>
 
-                <h1>Ingredients:</h1>
-                <ul>
-                    {ingredients.map((ingredient, index) => (
-                        <li key={index}>{ingredient}</li>
-                    ))}
-                </ul>
-
-                <h1>Nutritional Info:</h1>
-                <ul>
-                    {NutritionalInfo.map((info, index) => (
-                        <li key={index}>{info}</li>
-                    ))}
-                </ul>
-
-                <h1>Cooking Instructions:</h1>
-                <ol>
+                {/* ---------------------Cooking Instructions--------------------- */}
+            <div className="flex w-full justify-between ">
+                <div className="bg-white p-4 rounded-lg shadow-md mt-6 w-[70.8%] flex flex-col gap-y-2 flex-wrap">
+                <h2 className="text-red-500 text-[20px] leading-[24px] font-medium mb-2">Cooking Instructions:</h2>
+                <ol className="list-decimal pl-5">
                     {cookingInstructions.map((instruction, index) => (
-                        <li key={index}>{instruction}</li>
+                        <li key={index} className="text-base leading-6">
+                            {instruction}
+                        </li>
                     ))}
                 </ol>
+                     </div>
+
+                     <div className="h-[300px] -z-10 w-[350px] bg-gray-100 rounded-[31px] relative">
+                        <img src={chef} alt="Chef" className="h-[300px] w-[350px]"/>
+                        <p className="text-[20px] leading-[24px] font-medium absolute top-[200px] left-[30px]">
+                            Chef
+                        </p>
+
+                     </div>
+
+                </div>
+        
+
+               
+            </div>
+            <div className="flex justify-between items-center">
+                <h1 className="text-[20px] leading-[24px] font-medium text-[#BE1E1E]/[56%]">
+                    Recipe Reviews
+                </h1>
+                
+                    
             </div>
         </div>
     );

@@ -1,9 +1,10 @@
-import RecipePage from "./Component/View-Recipe/RecipePage";
+import UserSidebarWrapper from "./Component/User/SideBar";
 const App = () => {
   return (
     <div>
-      <RecipePage />
+      <UserSidebarWrapper/>
     </div>
+   
   );
 };
 

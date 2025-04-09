@@ -12,6 +12,11 @@ declare module "*.jpg" {
     const content: string;
     export default content;
 }
+declare module 'react'{
+    interface CSSProperties{
+        '--slide-direction'?: string;
+    }
+}
 
 
 

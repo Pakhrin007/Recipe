@@ -1,9 +1,14 @@
 import { useState } from 'react';
+import LoginPage from '../Auth-Pages/Login-Page';
+import SignupPage from '../Auth-Pages/Signup-Page';
 
 const NavBar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    const [showSignupModal, setShowSignupModal] = useState(false);
 
     return (
+        <>
         <div>
             <nav className="bg-white border-gray-200">
                 <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
@@ -37,11 +42,11 @@ const NavBar = () => {
                         className={`${isMenuOpen ? 'block' : 'hidden'} w-[100%] md:block md:w-auto`}
                         id="navbar-default"
                     >
-                        <ul className="font-medium flex flex-col p-3 md:p-0 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0">
+                        <ul className="font-medium flex flex-col p-3 md:p-0 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0">
                             <li>
                                 <a
                                     href="#"
-                                    className="block py-1.5 px-3 text-white rounded-sm md:bg-transparent md:p-0 dark:text-white"
+                                    className="block py-1.5 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-black"
                                 >
                                     Home
                                 </a>
@@ -81,12 +86,15 @@ const NavBar = () => {
 
                             {/* Mobile-only Login & Signup */}
                             <li className="md:hidden text-center mt-1">
-                                <button className="w-full block py-1.5 px-3 text-white bg-red-500 rounded-sm hover:bg-red-600 text-center">
+                                <button
+                                    className="w-full block py-1.5 px-3 text-white bg-red-500 rounded-sm hover:bg-red-600 text-center"
+                                    onClick={() => setShowModal(true)}
+                                >
                                     Login
                                 </button>
                             </li>
                             <li className="md:hidden text-center mt-1">
-                                <button className="w-full text-center block py-1.5 px-3 text-white bg-yellow-500 rounded-sm hover:bg-yellow-600">
+                                <button className="w-full text-center block py-1.5 px-3 text-white bg-yellow-500 rounded-sm hover:bg-yellow-600" onClick={()=>setShowSignupModal(true)}>
                                     Signup
                                 </button>
                             </li>
@@ -96,12 +104,15 @@ const NavBar = () => {
                     {/* Desktop Buttons */}
                     <ul className="hidden md:flex items-center gap-x-4">
                         <li>
-                            <button className="inline-flex items-center px-4 py-2 text-white rounded-sm bg-red-500 hover:bg-red-600">
+                            <button
+                                className="inline-flex items-center px-4 py-2 text-white rounded-sm bg-red-500 hover:bg-red-600"
+                                onClick={() => setShowModal(true)} 
+                            >
                                 Login
                             </button>
                         </li>
                         <li>
-                            <button className="inline-flex items-center px-4 py-2 text-white rounded-sm bg-yellow-500 hover:bg-yellow-600">
+                            <button className="inline-flex items-center px-4 py-2 text-white rounded-sm bg-yellow-500 hover:bg-yellow-600" onClick={()=>setShowSignupModal(true)}>
                                 Signup
                             </button>
                         </li>
@@ -109,6 +120,10 @@ const NavBar = () => {
                 </div>
             </nav>
         </div>
+        <LoginPage isVisible={showModal} onClose={()=>setShowModal(false)} />
+        <SignupPage isvisible={showSignupModal} onClose={()=>setShowSignupModal(false)} />
+        </> 
+
     );
 };
 
