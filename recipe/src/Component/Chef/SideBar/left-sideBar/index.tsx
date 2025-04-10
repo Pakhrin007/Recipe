@@ -27,11 +27,9 @@ const SideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
             <div className="flex flex-col gap-y-[20px] text-justify">
                 {/* RecipeNest Title */}
                 <p
-                    className={`rounded-[8px] p-[12px] mb-[30px] text-[#FF1313] font-bold text-[14px] cursor-pointer ${
-                        isCollapsed ? "hidden" : ""
-                    }`}
+                    className={`rounded-[8px] p-[12px] mb-[30px] text-[#FF1313] font-bold text-[14px] cursor-pointer `}
                 >
-                    RecipeNest
+                    {isCollapsed ? "Rn" : "RecipeNest"}
                 </p>
 
                 {/* Navigation Links */}

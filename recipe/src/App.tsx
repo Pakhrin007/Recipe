@@ -1,8 +1,8 @@
-import UserSidebarWrapper from "./Component/User/SideBar";
+import LandingPage from "./Component/Landing-Page";
 const App = () => {
   return (
     <div>
-      <UserSidebarWrapper/>
+      <LandingPage />
     </div>
    
   );

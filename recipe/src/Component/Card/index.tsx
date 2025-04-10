@@ -13,7 +13,7 @@ function RecipeCard() {
  
   return (
     <section id="recipes" className="py-8 ">
-      <div className="recipes-container max-w-7xl mx-auto">
+      <div className="recipes-container max-w-7xl ">
         <div className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {recipes.map((recipe) => (
             <div

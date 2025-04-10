@@ -21,7 +21,7 @@ const Profile = () => {
   <p
     className={`text-[16px] cursor-pointer font-regular ${
       isactiveTab === "manage-account"
-        ? "text-red-400 underline underline-offset-4"
+        ? "text-red-400 underline underline-offset-8 decoration-2"
         : "text-black"
     }`}
     onClick={() => setActiveTab("manage-account")}
@@ -31,7 +31,7 @@ const Profile = () => {
   <p
     className={`text-[16px] cursor-pointer font-regular ${
       isactiveTab === "saved-recipes"
-        ? "text-red-400 underline underline-offset-4"
+        ? "text-red-400 underline underline-offset-8 decoration-2"
         : "text-black"
     }`}
     onClick={() => setActiveTab("saved-recipes")}

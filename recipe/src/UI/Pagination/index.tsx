@@ -1,38 +1,71 @@
-const Pagination = () => {
+
+
+const Pagination = ({ currentPage, totalPages, onPageChange }:any) => {
+    const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+
     return (
-        <div>
-            
+        <nav aria-label="Page navigation example">
+            <ul className="inline-flex gap-x-2 text-sm">
+                {/* Previous button */}
+                <li>
+                    <a
+                        href="#"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            if (currentPage > 1) {
+                                onPageChange(currentPage - 1);
+                            }
+                        }}
+                        className={`flex items-center justify-center px-3 h-8 ${
+                            currentPage === 1
+                                ? "bg-[#FF0000]/[58%] text-white cursor-not-allowed"
+                                : "bg-[#FF0000]/[58%] text-white"
+                        }`}
+                    >
+                        Previous
+                    </a>
+                </li>
 
-<nav aria-label="Page navigation example">
-  <ul className="inline-flex gap-x-2 text-sm">
-    <li>
-      <a href="#" className="flex items-center justify-center px-3 h-8 bg-[#FF0000]/[58%] text-white">Previous</a>
-    </li>
-    <li>
-      <a href="#" className="flex items-center justify-center px-3 h-8 border text-black">1</a>
-    </li>
-    <li>
-      <a href="#" className="flex items-center justify-center px-3 h-8 border text-black">2</a>
-    </li>
-    <li>
-      <a href="#" className="flex items-center justify-center px-3 h-8 border text-black">3</a>
-    </li>
-   
-    <li>
-      <a href="#" className="flex items-center justify-center px-3 h-8 border text-black">4</a>
-    </li>
-    <li>
-        <a href="#" className="flex items-center justify-center px-3 h-8 border text-black">5</a>
-        </li>
-        <li>
-      <a href="#" className="flex items-center justify-center px-3 h-8 bg-[#FF0000]/[58%] text-white">Next</a>
-    </li>
-  </ul>
-</nav>
+                {/* Page numbers */}
+                {pages.map((page) => (
+                    <li key={page}>
+                        <a
+                            href="#"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                onPageChange(page);
+                            }}
+                            className={`flex items-center justify-center px-3 h-8 border text-black ${
+                                currentPage === page ? "bg-[#FF0000]/[58%] text-white" : ""
+                            }`}
+                        >
+                            {page}
+                        </a>
+                    </li>
+                ))}
 
+                {/* Next button */}
+                <li>
+                    <a
+                        href="#"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            if (currentPage < totalPages) {
+                                onPageChange(currentPage + 1);
+                            }
+                        }}
+                        className={`flex items-center justify-center px-3 h-8 ${
+                            currentPage === totalPages
+                                ? "bg-[#FF0000]/[58%] text-white cursor-not-allowed"
+                                : "bg-[#FF0000]/[58%] text-white"
+                        }`}
+                    >
+                        Next
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    );
+};
 
-        </div>
-    )
-}           
-
-export default Pagination;
+export default Pagination;  

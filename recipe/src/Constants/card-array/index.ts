@@ -19,6 +19,8 @@ interface Recipe {
     cookingInstructions?: string[];
     chefName?: string;
     chefImage?: string;
+    chefEmail?: string;
+    chefPhone?: string;
 }
 
 export const recipes: Recipe[] = [

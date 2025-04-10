@@ -1,7 +1,10 @@
+import Chef from "../../chef";
+
 const ChefList = () => {
     return (
-        <div>
-            <h1>Chef List</h1>
+        <div className="flex flex-col gap-y-[16px] px-[70px] py-[16px]">
+            <h1 className="text-[24px] font-bold font-body leading-[32px]">Chef List</h1>
+            <Chef/> 
         </div>
     )
 }
