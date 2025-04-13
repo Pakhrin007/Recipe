@@ -10,13 +10,13 @@ const Footer= () => {
             href="https://flowbite.com/"
             className="flex items-center mb-6 sm:mb-0 space-x-3 transition-transform transform hover:scale-105"
           >
-            <span className="self-center text-3xl font-bold text-[#EA4335] tracking-tight hover:text-black transition-colors">
+            <span className="self-center text-3xl font-bold text-[#EA4335] tracking-tight hover:text-black transition-colors font-title">
               RecipeNest
             </span>
           </a>
 
           {/* Navigation Links */}
-          <ul className="flex flex-wrap items-center gap-6 text-sm font-medium text-gray-600 sm:mb-0">
+          <ul className="flex flex-wrap items-center gap-6 text-sm font-medium text-gray-600 sm:mb-0 font-body">
             <li>
               <a
                 href="#"
@@ -53,15 +53,15 @@ const Footer= () => {
         </div>
 
         {/* Divider */}
-        <hr className="my-8 border-gray-200 sm:mx-auto lg:my-10 opacity-50" />
+        <hr className="my-8 border-gray-200 sm:mx-auto lg:my-10 opacity-50 font-body" />
 
         {/* Copyright Text */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <span className="text-sm text-gray-600 sm:text-center">
+          <span className="text-sm text-gray-600 sm:text-center font-body ">
             © {new Date().getFullYear()}{' '}
             <a
               href="https://flowbite.com/"
-              className=" text-[#EA4335] hover:text-black transition-colors"
+              className=" text-[#EA4335] hover:text-black transition-colors font-body"
             >
               RecipeNest™
             </a>

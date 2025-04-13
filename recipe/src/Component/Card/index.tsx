@@ -1,7 +1,7 @@
 import { recipes } from '../../Constants/card-array';
 import { AlertIcon } from '../../assets/icons/AlertIcon';   
 import { SaveIcon } from '../../assets/icons/SaveIcon';
-import { HeartIcon } from '../../assets/icons/HeartIcon';
+  import { HeartIcon } from '../../assets/icons/HeartIcon';
 import { CommentIcon } from '../../assets/icons/CommentIcon';
 import { StarIcon } from '../../assets/icons/StarIcon';
 import { useState } from 'react';
@@ -14,14 +14,14 @@ function RecipeCard() {
   return (
     <section id="recipes" className="py-8 ">
       <div className="recipes-container max-w-7xl ">
-        <div className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 font-body">
           {recipes.map((recipe) => (
             <div
               key={recipe.id}
-              className="recipe-card  rounded-lg shadow-md overflow-hidden" 
+              className="recipe-card w-[300px] h-[350px] rounded-lg shadow-md overflow-hidden" 
             >
               {/* Image */}
-              <div className="w-full h-64 bg-gray-600">
+              <div className=" bg-gray-600">
                 <img
                   src={recipe.image}
                   alt={recipe.title}

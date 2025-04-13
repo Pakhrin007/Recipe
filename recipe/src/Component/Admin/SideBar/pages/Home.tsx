@@ -8,8 +8,8 @@ const Home = () => {
         <div className="px-[16px] py-[16px] flex flex-col gap-y-[16px] w-full">
             {/* -----------------Greeting Message---------------- */}
             <div>
-                <p className="text-[24px] font-bold">Welcome back, Admin</p>
-                <p className="text-[16px] font-regular">Here's what's happening with your recipes</p>
+                <p className="text-[24px] font-bold font-body">Welcome back, Admin</p>
+                <p className="text-[16px] font-regular font-body">Here's what's happening with your recipes</p>
             </div>
 
             {/* ----------------------Total foodlovers, total chefs , total recipes and total reports---------------------- */}
@@ -60,7 +60,7 @@ const Home = () => {
             </div>
             {/* -----------------------recent Activity-------------------------- */}
             <div className="flex flex-col gap-y-[16px] bg-[#F2994B]/[21%] rounded-[8px] p-[16px]">
-            <p className="text-[16px] font-regular">Recent Activity</p>
+            <p className="text-[16px] font-regular font-body">Recent Activity</p>
             <div className="flex items-center gap-x-[16px]">
                     <i className="w-[30px] h-[30px] bg-[#EEA18C]/[91%] flex justify-center items-center rounded-[8px]">
                         <ChefHat className="w-[24px] h-[24px]" />

@@ -35,7 +35,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }:any) => {
                                 e.preventDefault();
                                 onPageChange(page);
                             }}
-                            className={`flex items-center justify-center px-3 h-8 border text-black ${
+                            className={`flex items-center justify-center px-3 h-8 border text-black font-body ${
                                 currentPage === page ? "bg-[#FF0000]/[58%] text-white" : ""
                             }`}
                         >

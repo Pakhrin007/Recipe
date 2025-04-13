@@ -15,7 +15,7 @@ const ChefListCard = ({ image, name, specialty }: ChefListProps) => {
       />
       <div className="p-4 text-center">
         <h1 className="text-xl font-bold text-gray-800">{truncateString(20,name)}</h1>
-        <p className="text-sm text-gray-500 mt-1 mb-4">Specialist in: <span className="font-medium">{truncateString(20,specialty)}</span></p>
+        <p className="text-sm text-gray-500 mt-1 mb-4">Specialist in: <span className="font-medium">{truncateString(15,specialty)}</span></p>
         <button className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full transition-colors duration-300">
           View Profile
         </button>

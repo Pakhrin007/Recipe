@@ -8,6 +8,7 @@ import LogoutIcon from '../../../../assets/icons/LogoutIcon';
 import { HeartIcon } from '../../../../assets/icons/HeartIcon';
 import AddIcon from '../../../../assets/icons/AddIcon';
 import pakhrin from '../../../../assets/images/Pakhrin.jpg';
+import Tooltip from '../../../../UI/Tooltip';   
 interface SideBarProps {
     pageSelected: "home" | "chef-list" | "favourites" | "my-list" | "FAQ" | "add-recipe" | "profile";
     setPageSelected: (pageSelected: "home" | "chef-list" | "favourites" | "my-list" | "FAQ" | "add-recipe" | "profile") => void;
@@ -19,7 +20,7 @@ const SideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
 
     return (    
         <div
-            className={`flex flex-col justify-between  h-screen ${
+            className={`flex flex-col justify-between  h-screen  ${
                 isCollapsed ? "min-w-[60px]" : "min-w-[160px]"
             } border-r-2 border-border-dark shadow-lg gap-y-[24px] px-[16px] py-[16px] h-screen transition-all duration-300`}
         >
@@ -27,9 +28,10 @@ const SideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
             <div className="flex flex-col gap-y-[20px] text-justify">
                 {/* RecipeNest Title */}
                 <p
-                    className={`rounded-[8px] p-[12px] mb-[30px] text-[#FF1313] font-bold text-[14px] cursor-pointer `}
+                    className={`font-title rounded-[8px] p-[12px] mb-[30px] text-[#FF1313] font-bold text-[14px] cursor-pointer  `}
                 >
                     {isCollapsed ? "Rn" : "RecipeNest"}
+                    
                 </p>
 
                 {/* Navigation Links */}

@@ -24,7 +24,7 @@ const TestimonialSection = () => {
       {/* Testimonial Card */}
       <div className="flex flex-col  rounded-lg p-6 shadow-md w-full">
         {/* -------------------description---------------- */}  
-      <p className="text-center text-gray-700 mt-2">{currentTestimonial.description}</p>
+      <p className="text-center text-gray-700 mt-2 font-body">{currentTestimonial.description}</p>
       {/* -------------------name and image---------------- */}
       <div className="flex items-center gap-x-[16px] mt-[16px]  ">
       <img
@@ -33,7 +33,7 @@ const TestimonialSection = () => {
           className="w-[38px] h-[38px] rounded-full "
           
         />
-        <div className="flex flex-col ">
+        <div className="flex flex-col font-body">
         <h3 className="text-xl font-bold">{currentTestimonial.name}</h3>
         <p className="text-yellow-500">{"★".repeat(Math.floor(currentTestimonial.rating))} ({currentTestimonial.rating})</p>
         </div>

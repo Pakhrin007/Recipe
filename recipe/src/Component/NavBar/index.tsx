@@ -13,7 +13,7 @@ const NavBar = () => {
             <nav className="bg-white border-gray-200">
                 <div className=" flex flex-wrap items-center justify-between">
                     <a href="#" className="flex items-center space-x-3 rtl:space-x-reverse">
-                        <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-red-500">
+                        <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-red-500 font-title">
                             RecipeNest
                         </span>
                     </a>
@@ -42,7 +42,7 @@ const NavBar = () => {
                         className={`${isMenuOpen ? 'block' : 'hidden'} w-[100%] md:block md:w-auto`}
                         id="navbar-default"
                     >
-                        <ul className="font-medium flex flex-col p-3 md:p-0 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0">
+                        <ul className="font-medium flex flex-col p-3 md:p-0 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 font-body">
                             <li>
                                 <a
                                     href="#"
@@ -87,14 +87,14 @@ const NavBar = () => {
                             {/* Mobile-only Login & Signup */}
                             <li className="md:hidden text-center mt-1">
                                 <button
-                                    className="w-full block py-1.5 px-3 text-white bg-red-500 rounded-sm hover:bg-red-600 text-center"
+                                    className="w-full block py-1.5 px-3 text-white bg-red-500 rounded-sm hover:bg-red-600 text-center font-body"
                                     onClick={() => setShowModal(true)}
                                 >
                                     Login
                                 </button>
                             </li>
                             <li className="md:hidden text-center mt-1">
-                                <button className="w-full text-center block py-1.5 px-3 text-white bg-yellow-500 rounded-sm hover:bg-yellow-600" onClick={()=>setShowSignupModal(true)}>
+                                <button className="w-full text-center block py-1.5 px-3 text-white bg-yellow-500 rounded-sm hover:bg-yellow-600 font-body" onClick={()=>setShowSignupModal(true)}>
                                     Signup
                                 </button>
                             </li>
@@ -121,7 +121,11 @@ const NavBar = () => {
             </nav>
         </div>
         <LoginPage isVisible={showModal} onClose={()=>setShowModal(false)} />
-        <SignupPage isvisible={showSignupModal} onClose={()=>setShowSignupModal(false)} />
+        <SignupPage 
+          isvisible={showSignupModal} 
+          onClose={() => setShowSignupModal(false)} 
+          setIsLoginModalOpen={() => setShowModal(true)} 
+        />
         </> 
 
     );

@@ -1,4 +1,4 @@
-import LandingPage from "./Component/Landing-Page";
+import LandingPage from "./Component/Landing-Page/index";
 const App = () => {
   return (
     <div>

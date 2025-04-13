@@ -6,7 +6,7 @@ const AddRecipePage = () => {
       <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-3xl space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-gray-800">Add Your Recipe</h1>
+          <h1 className="text-2xl font-bold text-gray-800 font-title">Add Your Recipe</h1>
           <button className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition">
             Cancel
           </button>
@@ -14,7 +14,7 @@ const AddRecipePage = () => {
 
         {/* Recipe Name */}
         <div>
-          <label htmlFor="recipeName" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="recipeName" className="block text-sm font-medium text-gray-700 font-body  ">
             Recipe Name
           </label>
           <input
@@ -27,7 +27,7 @@ const AddRecipePage = () => {
 
         <div>
         <div>
-          <label htmlFor="recipeName" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="recipeName" className="block text-sm font-medium text-gray-700 font-body">
             Recipe Image
           </label>  
           <input
@@ -41,7 +41,7 @@ const AddRecipePage = () => {
 
         {/* Description */}
         <div>
-          <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="description" className="block text-sm font-medium text-gray-700 font-body">
             Description
           </label>
           <textarea
@@ -54,7 +54,7 @@ const AddRecipePage = () => {
 
         {/* Ingredients */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">Ingredients</label>
+          <label className="block text-sm font-medium text-gray-700 font-body">Ingredients</label>
           <div className="mt-2 space-y-2">
             {/* Ingredient Input Fields */}
             <div className="flex items-center gap-2">
@@ -86,7 +86,7 @@ const AddRecipePage = () => {
 
         {/* Cooking Steps */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">Cooking Steps</label>
+          <label className="block text-sm font-medium text-gray-700 font-body">Cooking Steps</label>
           <div className="mt-2 space-y-2">
             {/* Step Input Fields */}
             <div className="flex items-center gap-2">
@@ -118,7 +118,7 @@ const AddRecipePage = () => {
 
         {/* Preparation Time */}
         <div>
-          <label htmlFor="preparationTime" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="preparationTime" className="block text-sm font-medium text-gray-700 font-body">
             Preparation Time (minutes)
           </label>
           <input
@@ -131,7 +131,7 @@ const AddRecipePage = () => {
 
         {/* Difficulty Level */}
         <div>
-          <label htmlFor="difficultyLevel" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="difficultyLevel" className="block text-sm font-medium text-gray-700 font-body">
             Difficulty Level
           </label>
           <select
@@ -146,7 +146,7 @@ const AddRecipePage = () => {
 
         {/* Chef's Name */}
         <div>
-          <label htmlFor="chefName" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="chefName" className="block text-sm font-medium text-gray-700 font-body">
             Chef's Name
           </label>
           <input
@@ -161,7 +161,7 @@ const AddRecipePage = () => {
         <div>
           <button
             type="submit"
-            className="w-full px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition"
+            className="w-full px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition font-body"
           >
             Submit Recipe
           </button>

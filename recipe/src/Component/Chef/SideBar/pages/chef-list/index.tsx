@@ -3,7 +3,7 @@ import ChefListCard from "./card";
 
 const ChefList = () => {
   return (
-    <div className="flex flex-wrap gap-6">
+    <div className="flex flex-wrap gap-6 font-body">
       {chefs.map((chef) => (
         <ChefListCard
           key={chef.id}

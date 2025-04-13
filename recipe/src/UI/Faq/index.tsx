@@ -37,15 +37,15 @@ const Faq = () => {
 
   return (
     <div className="w-full max-w-4xl ml-[100px] p-6 bg-white rounded-xl shadow-lg mt-10">
-      <h1 className="text-3xl font-bold text-center text-red-500 mb-6">
+      <h1 className="text-3xl font-bold text-center text-red-500 mb-6 font-title  ">
         Frequently Asked Questions
       </h1>
-      <div className="space-y-4">
+      <div className="space-y-4 font-body">
         {faqs.map((faq, index) => (
           <div key={index} className="border border-gray-200 rounded-xl overflow-hidden">
             <button
               onClick={() => toggleAccordion(index)}
-              className="w-full flex justify-between items-center p-5 text-left font-medium text-gray-700 hover:bg-red-50 transition-colors"
+              className="w-full flex justify-between items-center p-5 text-left font-medium text-gray-700 hover:bg-red-50 transition-colors font-body"
             >
               <span>{faq.question}</span>
               <svg
@@ -60,7 +60,7 @@ const Faq = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
               </svg>
             </button>
-            <div className={`${activeIndex === index ? "block" : "hidden"} px-5 pb-5 text-gray-600`}>
+            <div className={`${activeIndex === index ? "block" : "hidden"} px-5 pb-5 text-gray-600 font-body`}>
               {faq.answer}
             </div>
           </div>

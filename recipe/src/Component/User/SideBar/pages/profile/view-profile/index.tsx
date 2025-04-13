@@ -23,7 +23,7 @@ const ViewProfile = () => {
 
   return (
     <div className="max-w-4xl p-5 font-sans">
-      <h1 className="text-3xl font-bold mb-5">View Profile</h1>
+      <h1 className="text-3xl font-bold mb-5 font-body">View Profile</h1>
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center">
           <img
@@ -32,38 +32,38 @@ const ViewProfile = () => {
             className="w-12 h-12 rounded-full mr-5"
           />
           <div>
-            <h2 className="text-2xl font-semibold">{user.name}</h2>
-            <p className="text-gray-600">{user.email}</p>
+            <h2 className="text-2xl font-semibold font-body">{user.name}</h2>
+            <p className="text-gray-600 font-body">{user.email}</p>
             <span className="inline-block bg-gray-200 text-sm px-3 py-1 rounded-full mt-1">
               {user.tag}
             </span>
           </div>
         </div>
-        <button className="text-red-500 underline text-lg">Edit Profile</button>
+        <button className="text-red-500 underline text-lg font-body">Edit Profile</button>
       </div>
       <div className="flex flex-wrap -mx-2">
         <div className="w-full md:w-1/2 px-2 mb-5">
           <div className="border-b border-gray-300 pb-3">
-            <label className="block font-bold text-gray-700">Username</label>
-            <p className="text-gray-600">{user.username}</p>
+            <label className="block font-bold text-gray-700 font-body">Username</label>
+            <p className="text-gray-600 font-body">{user.username}</p>
           </div>
         </div>
         <div className="w-full md:w-1/2 px-2 mb-5">
           <div className="border-b border-gray-300 pb-3">
-            <label className="block font-bold text-gray-700">Email</label>
-            <p className="text-gray-600">{user.email}</p>
+            <label className="block font-bold text-gray-700 font-body">Email</label>
+            <p className="text-gray-600 font-body">{user.email}</p>
           </div>
         </div>
         <div className="w-full md:w-1/2 px-2 mb-5">
           <div className="border-b border-gray-300 pb-3">
-            <label className="block font-bold text-gray-700">Full Name</label>
-            <p className="text-gray-600">{user.name}</p>
+            <label className="block font-bold text-gray-700 font-body">Full Name</label>
+            <p className="text-gray-600 font-body">{user.name}</p>
           </div>
         </div>
         <div className="w-full md:w-1/2 px-2 mb-5">
           <div className="border-b border-gray-300 pb-3">
-            <label className="block font-bold text-gray-700">Phone Number</label>
-            <p className="text-gray-600">{user.phone}</p>
+            <label className="block font-bold text-gray-700 font-body">Phone Number</label>
+            <p className="text-gray-600 font-body">{user.phone}</p>
           </div>
         </div>
       </div>

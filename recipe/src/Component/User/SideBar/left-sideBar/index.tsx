@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import HomeIcon from '../../../../assets/icons/HomeIcon';
 import ContactIcon from '../../../../assets/icons/ContactIcon';
-import ListIcon from '../../../../assets/icons/ListIcon';
 import FAQIcon from '../../../../assets/icons/FAQIcon';
 import CollapseIcon from '../../../../assets/icons/CollapseIcon';
 import LogoutIcon from '../../../../assets/icons/LogoutIcon';
 import { HeartIcon } from '../../../../assets/icons/HeartIcon';
-import AddIcon from '../../../../assets/icons/AddIcon';
 import pakhrin from '../../../../assets/images/Pakhrin.jpg';
 interface SideBarProps {
     pageSelected: "home" | "chef-list" | "favourites"  | "FAQ" | "profile";
@@ -27,7 +25,7 @@ const SideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
             <div className="flex flex-col gap-y-[20px] text-justify">
                 {/* RecipeNest Title */}
                 <p
-                    className={`rounded-[8px] p-[12px] mb-[30px] text-[#FF1313] font-bold text-[14px] cursor-pointer `}
+                    className={`rounded-[8px] p-[12px] mb-[30px] text-[#FF1313] font-bold text-[14px] cursor-pointer font-title`}
                 >
                     {isCollapsed ? "Rn" : "RecipeNest"}
                 </p>
@@ -45,7 +43,7 @@ const SideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
                         <HomeIcon className="w-[24px] h-[24px] text-black" />
                     </i>
                     {!isCollapsed && (
-                        <p className="text-[14px] font-regular font-body leading-[20px] dark:text-text-secondary-dark">
+                        <p className="text-[14px] font-regular font-body leading-[20px] dark:text-text-secondary-dark font-body">
                             Home
                         </p>
                     )}
@@ -63,7 +61,7 @@ const SideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
                         <ContactIcon className="w-[24px] h-[24px] text-black" />
                     </i>
                     {!isCollapsed && (
-                        <p className="text-[14px] font-regular font-body leading-[20px] dark:text-text-secondary-dark/[60%]">
+                        <p className="text-[14px] font-regular font-body leading-[20px] dark:text-text-secondary-dark/[60%] font-body">
                             Chef List
                         </p>
                     )}
@@ -81,7 +79,7 @@ const SideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
                         <HeartIcon className="w-[24px] h-[24px]" />
                     </i>
                     {!isCollapsed && (
-                        <p className="text-[14px] font-regular font-body leading-[20px] dark:text-text-secondary-dark/[60%]">
+                        <p className="text-[14px] font-regular font-body leading-[20px] dark:text-text-secondary-dark/[60%] font-body">
                             Favourites
                         </p>
                     )}
@@ -101,7 +99,7 @@ const SideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
                         <FAQIcon className="w-[24px] h-[24px] text-black" />
                     </i>
                     {!isCollapsed && (
-                        <p className="text-[14px] font-regular font-body leading-[20px] dark:text-text-secondary-dark/[60%]">
+                        <p className="text-[14px] font-regular font-body leading-[20px] dark:text-text-secondary-dark/[60%] font-body">
                             FAQ
                         </p>
                     )}
@@ -121,7 +119,7 @@ const SideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
                         <CollapseIcon className="w-[24px] h-[24px] text-black" />
                     </i>
                     {!isCollapsed && (
-                        <p className="text-[14px] font-regular font-body leading-[20px] dark:text-text-secondary-dark/[60%]">
+                        <p className="text-[14px] font-regular font-body leading-[20px] dark:text-text-secondary-dark/[60%] font-body">
                             Collapse
                         </p>
                     )}
@@ -132,7 +130,7 @@ const SideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
                         <LogoutIcon className="w-[24px] h-[24px] text-black" />
                     </i>
                     {!isCollapsed && (
-                        <p className="text-[14px] font-regular font-body leading-[20px] dark:text-text-secondary-dark/[60%]">
+                        <p className="text-[14px] font-regular font-body leading-[20px] dark:text-text-secondary-dark/[60%] font-body">
                             Logout
                         </p>
                     )}
@@ -145,7 +143,7 @@ const SideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
                         className="w-[24px] h-[24px] rounded-full"
                     />
                     {!isCollapsed && (
-                        <p className="text-[14px] font-regular font-body leading-[20px] dark:text-text-secondary-dark/[60%]">
+                        <p className="text-[14px] font-regular font-body leading-[20px] dark:text-text-secondary-dark/[60%] font-body">
                             Profile
                         </p>
                     )}

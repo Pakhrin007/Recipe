@@ -24,15 +24,15 @@ const Dropdown = ({ options, className }: DropdownProps) => {
   };
 
   return (
-    <div className={`relative ${className}`}>
+    <div className={`relative font-body ${className}`}>
       {/* Input field with dropdown icon */}
       <div
-        className="flex items-center justify-between p-12 rounded-8 border dark:border-input-border-dark dark:bg-input-bg-dark transition-all cursor-pointer"
+        className="flex items-center justify-between rounded-[8px] border-[2px] border-black px-[16px] py-[8px] transition-all cursor-pointer"
         onClick={() => setIsOpen(!isOpen)} // Toggle dropdown when clicked
       >
         <span>{selectedOption}</span> {/* Removed the "Select an option" fallback */}
         <ChevDownIcon
-          className="dark:text-icon-inactive-dark transition-transform duration-200 ease-in-out"
+          className="text-black transition-transform duration-200 ease-in-out"
           width={16}
           height={16}
           style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }}
@@ -41,11 +41,11 @@ const Dropdown = ({ options, className }: DropdownProps) => {
 
       {/* Dropdown menu */}
       {isOpen && (
-        <ul className="absolute top-full left-0 z-10 w-full dark:border-input-border-dark dark:bg-input-bg-dark rounded-8 overflow-hidden">
+            <ul className="absolute top-full left-0 z-10 w-full rounded-[8px] overflow-hidden bg-gray-100 text-black">
           {options.map((option, index) => (
             <li
               key={index}
-              className="p-12 cursor-pointer"
+              className="px-[16px] py-[8px] cursor-pointer font-body"
               onClick={() => handleOptionClick(option)}
             >
               {option}
