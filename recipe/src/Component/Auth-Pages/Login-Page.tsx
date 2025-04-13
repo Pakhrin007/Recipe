@@ -9,6 +9,7 @@ const LoginPage = ({ isVisible, onClose }: { isVisible: boolean; onClose: () => 
     try{
       const response=await axios.post("https://localhost:7136/api/auth/login",{email,password});
       console.log(response);
+      
       alert("Login successful");
       onClose();
     }
@@ -22,12 +23,13 @@ const LoginPage = ({ isVisible, onClose }: { isVisible: boolean; onClose: () => 
     // -----------------------------Main Div---------------------------------
     <div className="flex justify-center items-center w-full h-screen fixed inset-0 bg-black/50 backdrop-blur-sm z-50" >
       {/* -----------------------------Form Div--------------------------------- */}
-        <form action="" onSubmit={handleLogin}>
+        <form onSubmit={handleLogin}>
         <div className="flex flex-col w-full max-w-[90%] sm:max-w-[600px] md:max-w-[700px] lg:max-w-[800px] mx-auto my-6 sm:my-[40px] bg-gray-100 rounded-lg shadow-lg">
           {/* Header with Title and Close Button */}
           <div className="flex justify-between items-center px-4 sm:px-6">
             <h1 className="text-xl sm:text-2xl font-bold text-[#BE1E1E]/[58%] font-title text-center">RecipeNest</h1>
             <button
+              type="button"
               className="text-black h-10 w-10 sm:h-[50px] sm:w-[50px] rounded-full bg-white flex items-center justify-center"
               onClick={onClose}
             >

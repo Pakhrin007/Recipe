@@ -26,7 +26,7 @@ const SignupPage = ({ isvisible , onClose, setIsLoginModalOpen }: SignupPageProp
       });
       alert('Signup successful');
       onClose();
-      setIsLoginModalOpen(true);
+      
     } catch (error: any) {
       console.error('Signup error:', error.response?.data || error.message);
       alert(error.response?.data?.message || 'Signup failed. Please try again.');
@@ -44,6 +44,7 @@ const SignupPage = ({ isvisible , onClose, setIsLoginModalOpen }: SignupPageProp
               RecipeNest
             </h1>
             <button
+              type="button"
               className="text-black h-10 w-10 sm:h-[50px] sm:w-[50px] rounded-full bg-white flex items-center justify-center"
               onClick={onClose}
             >
