@@ -4,9 +4,10 @@ import ChevDownIcon from "../../assets/icons/ChecDownIcon";
 interface DropdownProps {
   options: string[]; // Array of options to display in the dropdown
   className?: string;
+  onChange: (option: string) => void;
 }
 
-const Dropdown = ({ options, className }: DropdownProps) => {
+const Dropdown = ({ options, className, onChange }: DropdownProps) => {
   const [isOpen, setIsOpen] = useState(false); // Controls dropdown visibility
   const [selectedOption, setSelectedOption] = useState(""); // Stores the selected option
 
@@ -27,8 +28,9 @@ const Dropdown = ({ options, className }: DropdownProps) => {
     <div className={`relative font-body ${className}`}>
       {/* Input field with dropdown icon */}
       <div
-        className="flex items-center justify-between rounded-[8px] border-[2px] border-black px-[16px] py-[8px] transition-all cursor-pointer"
-        onClick={() => setIsOpen(!isOpen)} // Toggle dropdown when clicked
+        className="flex items-center justify-between rounded-[8px] px-[16px] py-[8px] transition-all cursor-pointer"
+        onClick={() => setIsOpen(!isOpen)} 
+        // Toggle dropdown when clicked
       >
         <span>{selectedOption}</span> {/* Removed the "Select an option" fallback */}
         <ChevDownIcon

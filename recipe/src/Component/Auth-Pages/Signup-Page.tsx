@@ -1,6 +1,7 @@
 import GoogleImage from '../../assets/auth-images/image.png';
 import axios from 'axios';
 import { useState } from 'react';
+import Dropdown from '../../UI/Drop-Down';
 
 interface SignupPageProps {
   isvisible: boolean;
@@ -12,6 +13,7 @@ const SignupPage = ({ isvisible , onClose, setIsLoginModalOpen }: SignupPageProp
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [role, setRole] = useState('FoodLover');
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,7 +22,7 @@ const SignupPage = ({ isvisible , onClose, setIsLoginModalOpen }: SignupPageProp
         name: name || email.trim().split('@')[0],
         email,
         password,
-        role: 'user',
+        role: role,
         bio: 'Hello from RecipeNest',
         profileImage: 'example/login/profile.png',
       });
@@ -94,6 +96,13 @@ const SignupPage = ({ isvisible , onClose, setIsLoginModalOpen }: SignupPageProp
               onChange={(e) => setEmail(e.target.value)}
               className="w-full p-2 rounded-md border border-gray-300 bg-[#FEFCF8] text-sm sm:text-base"
               placeholder="Enter your Email"
+            />
+
+         
+            <Dropdown 
+            options={['FoodLover', 'Chef']}
+            className='w-full p-2 rounded-md  border-gray-300 bg-[#FEFCF8] text-sm sm:text-base mt-2' 
+            onChange={(SelectedRole: any)=>{setRole(SelectedRole)}}
             />
 
             <button

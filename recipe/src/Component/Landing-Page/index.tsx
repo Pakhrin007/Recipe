@@ -9,7 +9,7 @@ import leaf from "../../assets/Images/leaves.png";
 import chopstick from "../../assets/Images/chopsticks.png";
 
 const LandingPage = () => {
- 
+
   return (
     <div className="flex flex-col px-4 sm:px-6 md:px-8 lg:px-16 py-4 sm:py-6 gap-y-6 min-h-screen">
       {/* Navbar */}

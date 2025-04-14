@@ -6,7 +6,7 @@ import Home from "./pages/Home";
 import SideBar from "./left-sideBar"; 
 import FAQ from "../../../UI/Faq";
 import Profile from "./pages/profile";
-const userSidebarWrapper = () => {
+const UserSidebarWrapper = () => {
     const [pageSelected, setPageSelected] = useState<"home"|"chef-list"|"favourites"|"my-list"|"FAQ"|"add-recipe"|"profile">("home");
 
     return (
@@ -23,4 +23,4 @@ const userSidebarWrapper = () => {
     );
 };
 
-export default userSidebarWrapper;
+export default UserSidebarWrapper;

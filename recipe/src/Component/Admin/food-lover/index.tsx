@@ -1,64 +1,86 @@
-import { foodLover } from "../../../Constants/food-lover/index";
-import Pagination from "../../../UI/Pagination"; // Import the Pagination component
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Pagination from "../../../UI/Pagination";
 
 const FoodLover = () => {
-    // State to manage pagination
-    const [currentPage, setCurrentPage] = useState(1); // Current page number
-    const itemsPerPage = 5; // Number of items to display per page
+  const [foodLovers, setFoodLovers] = useState([]);
+  const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 15;
 
-    // Calculate total pages
-    const totalPages = Math.ceil(foodLover.length / itemsPerPage);
-
-    // Function to handle page change
-    const handlePageChange = (pageNumber:any) => {
-        setCurrentPage(pageNumber);
+  // Fetch data from the API
+  useEffect(() => {
+    const fetchFoodLovers = async () => {
+      try {
+        const response = await fetch("https://localhost:7136/api/Users?role=FoodLover");
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log("Fetched food lovers:", data);
+        setFoodLovers(data);
+        setError(null);
+      } catch (err) {
+        console.error("Failed to fetch food lovers:", err);
+        setError("Failed to load food lovers. Please try again later.");
+        setFoodLovers([]);
+      }
     };
+    fetchFoodLovers();
+  }, []);
 
-    // Slice the data to display only the items for the current page
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = foodLover.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(foodLovers.length / itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = foodLovers.slice(indexOfFirstItem, indexOfLastItem);
 
-    return (
-        <div className="flex flex-col gap-y-[16px]">
-            <input type="text" placeholder="Search" className="w-full h-[40px] rounded-[8px] px-[16px] py-[8px] border-[2px] border-black  " />
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
 
-            {/* Table columns */}
-            <div className="flex gap-x-[16px] bg-black px-[16px] py-[16px]">
-                <p className="text-[14px] font-regular font-body leading-[20px] w-[100px] text-white">S.N</p>
-                <p className="text-[14px] font-regular font-body leading-[20px] w-[200px] text-white">User</p>
-                <p className="text-[14px] font-regular font-body leading-[20px] w-[270px] text-white">Email</p>
-                <p className="text-[14px] font-regular font-body leading-[20px] w-[300px] text-white">Phone Number</p>
-                <p className="text-[14px] font-regular font-body leading-[20px] w-[50px] text-white">Actions</p>
-            </div>
+  return (
+    <div className="flex flex-col gap-y-[16px]">
+      <input
+        type="text"
+        placeholder="Search"
+        className="w-full h-[40px] rounded-[8px] px-[16px] py-[8px] border-[2px] border-black"
+      />
 
-            {/* Display current items */}
-            {currentItems.map((foodlover, index) => (
-                <div key={foodlover.id} className="flex gap-x-[16px] ">
-                    <p className="text-[14px] font-regular font-body leading-[20px] w-[100px]">{indexOfFirstItem + index + 1}</p>
-                    <p className="text-[14px] font-regular font-body leading-[20px] w-[200px]">{foodlover.name}</p>
-                    <p className="text-[14px] font-regular font-body leading-[20px] w-[270px]">{foodlover.email}</p>
-                    <p className="text-[14px] font-regular font-body leading-[20px] w-[300px]">{foodlover.phone}</p>
-                    <p className="text-[14px] font-regular font-body leading-[20px] w-[50px]">
-                        <button className="bg-red-500 text-white px-2 py-1 rounded">Suspend Account</button>
-                    </p>
-                </div>
-            ))}
+      {/* Table headers */}
+      <div className="flex gap-x-[16px] bg-black px-[16px] py-[16px]">
+        <p className="text-[14px] w-[100px] text-white">S.N</p>
+        <p className="text-[14px] w-[200px] text-white">User</p>
+        <p className="text-[14px] w-[270px] text-white">Email</p>
+        <p className="text-[14px] w-[50px] text-white">Actions</p>
+      </div>
 
-            {/* Pagination section */}
-            <div className="flex justify-between items-center mt-4 bg-black px-[16px] py-[16px]">
-                <p className="text-[14px] font-regular font-body leading-[20px] text-white">
-                    Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, foodLover.length)} of {foodLover.length} entries
-                </p>
-                <Pagination
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={handlePageChange}
-                />
-            </div>
+      {/* Table rows */}
+      {currentItems.map((foodlover: any, index: number) => (
+        <div key={foodlover.id} className="flex gap-x-[16px]">
+          <p className="text-[14px] w-[100px]">{indexOfFirstItem + index + 1}</p>
+          <p className="text-[14px] w-[200px]">{foodlover.name}</p>
+          <p className="text-[14px] w-[270px]">{foodlover.email}</p>
+          <p className="text-[14px] w-[50px]">
+            <button className="bg-red-500 text-white px-2 py-1 rounded">
+              Suspend
+            </button>
+          </p>
         </div>
-    );
+      ))}
+
+      {/* Pagination */}
+      <div className="flex justify-between items-center mt-4 px-[16px] py-[16px]">
+        <p className="text-[14px] text-white">
+          Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, foodLovers.length)} of{" "}
+          {foodLovers.length} entries
+        </p>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      </div>
+    </div>
+  );
 };
 
 export default FoodLover;

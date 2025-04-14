@@ -1,22 +1,66 @@
-import GoogleImage from "../../assets/auth-images/image.png";
 import { useState } from "react";
+import GoogleImage from "../../assets/auth-images/image.png";
+import { setTokens } from "../../Services/JwtServices";
+import { useDispatch } from "react-redux";
+import { setRole } from "../../Slice/StateSlice";
+import { jwtDecode } from "jwt-decode";
+
 import axios from "axios";
+
 const LoginPage = ({ isVisible, onClose }: { isVisible: boolean; onClose: () => void }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const handleLogin=async(e:React.FormEvent)=>{
+  const dispatch=useDispatch();
+  const handleLogin = async (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try{
-      const response=await axios.post("https://localhost:7136/api/auth/login",{email,password});
-      console.log(response);
+  
+    try {
+      // Send login request to the backend
+      const response = await axios.post('https://localhost:7136/api/auth/login', {
+        email,
+        password,
+      });
+  
+      // Log the full response to verify its structure
+      console.log('Full Response:', response.data);
+  
+      // Destructure accessToken, refreshToken, and role from the response
+      const { token: accessToken } = response.data;
+      const decodeToken:any=jwtDecode(accessToken);
+      const role=decodeToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+      console.log("Decoded Role:", role);
+  
+      // Log the extracted values for better clarity
+      console.log('Access Token:', accessToken);
+      // console.log('User Role:', role);
+  
+      // Check if the accessToken and role are undefined
+      if (!accessToken || !role) {
+        console.error('Access token or role is missing from the response');
+      }
+  
+      // Store tokens (you can save both tokens in localStorage or other storage)
+      setTokens(accessToken, response.data.RefreshToken); // Store both access and refresh tokens
+  
+      // Set the role received from the response
       
-      alert("Login successful");
+      dispatch(setRole(role)); // Dispatch the role to the Redux store
+     
+  
+      // Close the login modal
       onClose();
-    }
-    catch(error){
-      console.error("Login error:", error);
-    }
-  }
+    } catch (error:any) {
+      // Handle login failure
+      if (error.response) {
+        console.error('Login failed:', error.response.data);
+        alert('Invalid email or password');
+      } else {
+        console.error('Login error:', error.message);
+        alert('An unexpected error occurred');
+      }
+    }
+  };
+  
   if (!isVisible) return null;
 
   return (
@@ -97,3 +141,7 @@ const LoginPage = ({ isVisible, onClose }: { isVisible: boolean; onClose: () => 
 };
 
 export default LoginPage;
+
+function setIsLoggedIn(arg0: boolean) {
+  throw new Error("Function not implemented.");
+}

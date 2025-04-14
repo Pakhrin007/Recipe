@@ -8,7 +8,7 @@ import SideBar from "./left-sideBar";
 import FAQ from "../../../UI/Faq";
 import AddRecipePage from "./pages/add-recipe";
 import Profile from "./pages/profile";
-const chefSidebarWrapper = () => {
+const ChefSidebarWrapper = () => {
     const [pageSelected, setPageSelected] = useState<"home"|"chef-list"|"favourites"|"my-list"|"FAQ"|"add-recipe"|"profile">("home");
 
     return (
@@ -19,7 +19,7 @@ const chefSidebarWrapper = () => {
                 {pageSelected==="chef-list" && <ChefList />}
                 {pageSelected==="favourites" && <Favourites />}
                 {pageSelected==="my-list" && <MyList />}
-                {pageSelected==="FAQ" && <FAQ />}
+                {pageSelected==="FAQ" && <FAQ />}   
                 {pageSelected==="add-recipe" && <AddRecipePage />}
                 {pageSelected==="profile" && <Profile />}
             </div>
@@ -27,4 +27,4 @@ const chefSidebarWrapper = () => {
     );
 };
 
-export default chefSidebarWrapper;
+export default ChefSidebarWrapper;
