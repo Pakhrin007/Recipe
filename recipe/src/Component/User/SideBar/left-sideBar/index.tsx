@@ -6,6 +6,7 @@ import CollapseIcon from '../../../../assets/icons/CollapseIcon';
 import LogoutIcon from '../../../../assets/icons/LogoutIcon';
 import { HeartIcon } from '../../../../assets/icons/HeartIcon';
 import pakhrin from '../../../../assets/images/Pakhrin.jpg';
+import Modal from '../../../../UI/Modal';
 interface SideBarProps {
     pageSelected: "home" | "chef-list" | "favourites"  | "FAQ" | "profile";
     setPageSelected: (pageSelected: "home" | "chef-list" | "favourites" | "FAQ"| "profile") => void;
@@ -14,6 +15,14 @@ interface SideBarProps {
 const SideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
     // State to track whether the sidebar is collapsed or not
     const [isCollapsed, setIsCollapsed] = useState(false);
+    const [isModalOpen,SetIsModalOpen]=useState(false);
+
+    const handleLogout=()=>{
+        SetIsModalOpen(true);
+    }
+    const handleCloseModal=()=>{
+        SetIsModalOpen(false);
+    }
 
     return (    
         <div
@@ -125,7 +134,7 @@ const SideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
                     )}
                 </div>
 
-                <div className="flex items-center gap-x-[16px] cursor-pointer">
+                <div className="flex items-center gap-x-[16px] cursor-pointer" onClick={handleLogout}>
                     <i>
                         <LogoutIcon className="w-[24px] h-[24px] text-black" />
                     </i>
@@ -149,6 +158,7 @@ const SideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
                     )}
                 </div>
             </div>
+            {isModalOpen && <Modal onClose={handleCloseModal} />}
         </div>
     );
 };

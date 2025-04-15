@@ -13,7 +13,7 @@ const SignupPage = ({ isvisible , onClose, setIsLoginModalOpen }: SignupPageProp
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-  const [role, setRole] = useState('FoodLover');
+  const [role, setRole] = useState('');
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,6 +28,8 @@ const SignupPage = ({ isvisible , onClose, setIsLoginModalOpen }: SignupPageProp
       });
       alert('Signup successful');
       onClose();
+      console.log("Role before signup:", role);
+
       
     } catch (error: any) {
       console.error('Signup error:', error.response?.data || error.message);
@@ -100,7 +102,9 @@ const SignupPage = ({ isvisible , onClose, setIsLoginModalOpen }: SignupPageProp
 
          
             <Dropdown 
+            
             options={['FoodLover', 'Chef']}
+
             className='w-full p-2 rounded-md  border-gray-300 bg-[#FEFCF8] text-sm sm:text-base mt-2' 
             onChange={(SelectedRole: any)=>{setRole(SelectedRole)}}
             />

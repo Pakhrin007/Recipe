@@ -2,37 +2,39 @@ import { useState, useEffect } from "react";
 import ChevDownIcon from "../../assets/icons/ChecDownIcon";
 
 interface DropdownProps {
-  options: string[]; // Array of options to display in the dropdown
+  options: string[];
+  onChange?: (value: string) => void; // Make onChange optional
   className?: string;
-  onChange: (option: string) => void;
 }
 
 const Dropdown = ({ options, className, onChange }: DropdownProps) => {
-  const [isOpen, setIsOpen] = useState(false); // Controls dropdown visibility
-  const [selectedOption, setSelectedOption] = useState(""); // Stores the selected option
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState("");
 
-  // Set the first option as the default selected value when the component mounts
   useEffect(() => {
-    if (options && options.length > 0) {
-      setSelectedOption(options[0]); // Set the first option (index 0) as the default
+    if (options && options.length > 0 && selectedOption === "") {
+      setSelectedOption(options[0]);
+      if (onChange) {
+        onChange(options[0]); // Only call if onChange exists
+      }
     }
-  }, [options]); // Run this effect when the options array changes
+  }, [options, onChange]); // Include onChange in dependencies
 
-  // Handle option selection
   const handleOptionClick = (option: string) => {
     setSelectedOption(option);
-    setIsOpen(false); // Close the dropdown after selecting an option
+    setIsOpen(false);
+    if (onChange) {
+      onChange(option); // Only call if onChange exists
+    }
   };
 
   return (
     <div className={`relative font-body ${className}`}>
-      {/* Input field with dropdown icon */}
       <div
         className="flex items-center justify-between rounded-[8px] px-[16px] py-[8px] transition-all cursor-pointer"
-        onClick={() => setIsOpen(!isOpen)} 
-        // Toggle dropdown when clicked
+        onClick={() => setIsOpen(!isOpen)}
       >
-        <span>{selectedOption}</span> {/* Removed the "Select an option" fallback */}
+        <span>{selectedOption || "Select an option"}</span>
         <ChevDownIcon
           className="text-black transition-transform duration-200 ease-in-out"
           width={16}
@@ -41,9 +43,8 @@ const Dropdown = ({ options, className, onChange }: DropdownProps) => {
         />
       </div>
 
-      {/* Dropdown menu */}
       {isOpen && (
-            <ul className="absolute top-full left-0 z-10 w-full rounded-[8px] overflow-hidden bg-gray-100 text-black">
+        <ul className="absolute top-full left-0 z-10 w-full rounded-[8px] overflow-hidden bg-gray-100 text-black">
           {options.map((option, index) => (
             <li
               key={index}

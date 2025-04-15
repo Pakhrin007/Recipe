@@ -6,6 +6,7 @@ import LogoutIcon from '../../../../assets/icons/LogoutIcon';
 import ReportIcon from '../../../../assets/icons/ReportIcon';
 import pakhrin from "../../../../assets/Images/Pakhrin.jpg";
 import LoverIcon from '../../../../assets/icons/LoverIcon';
+import Modal from '../../../../UI/Modal';
 interface SideBarProps {
     pageSelected: "home" | "chef-list" | "reports" | "foodLover-list";
     setPageSelected: (pageSelected: "home" | "chef-list" | "reports" | "foodLover-list") => void;
@@ -14,18 +15,25 @@ interface SideBarProps {
 const AdminSideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
     // State to track whether the sidebar is collapsed or not
     const [isCollapsed, setIsCollapsed] = useState(false);
+    const [isModalOpen,SetIsModalOpen]=useState(false);
 
+    const handleLogout=()=>{
+        SetIsModalOpen(true);
+    }
+    const handleCloseModal=()=>{
+        SetIsModalOpen(false);
+    }
     return (
         <div
             className={`flex flex-col justify-between ${
-                isCollapsed ? "min-w-[60px]" : "min-w-[160px]"
+                isCollapsed ? "min-w-[60px]" : "min-w-[180px]"
             } border-r-2 border-border-dark shadow-lg gap-y-[24px] px-[16px] py-[16px] h-screen transition-all duration-300`}
         >
             {/* Profile, Theme, Notifications, and Security */}
                 <div className="flex flex-col gap-y-[20px] text-justify font-title">
                 {/* RecipeNest Title */}
                 <p
-                    className={`rounded-[8px] p-[12px] mb-[30px] text-[#FF1313] font-bold text-[14px] cursor-pointer font-title`}
+                    className={`rounded-[8px] p-[12px] mb-[30px] text-[#FF1313] font-bold text-[16px] cursor-pointer font-title`}
                 >
                     {isCollapsed ? "Rn" : "RecipeNest"}
                 </p>
@@ -43,7 +51,7 @@ const AdminSideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
                         <HomeIcon className="w-[24px] h-[24px] text-black" />
                     </i>
                     {!isCollapsed && (
-                        <p className="text-[14px] font-regular font-body leading-[20px] dark:text-text-secondary-dark font-body ">
+                            <p className="text-[16px] font-regular font-body leading-[20px] dark:text-text-secondary-dark font-body ">
                             Home
                         </p>
                     )}
@@ -61,7 +69,7 @@ const AdminSideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
                         <ListIcon className="w-[24px] h-[24px] text-black" />
                     </i>
                     {!isCollapsed && (
-                        <p className="text-[14px] font-regular font-body leading-[20px] dark:text-text-secondary-dark/[60%] font-body">
+                        <p className="text-[16px] font-regular font-body leading-[20px] dark:text-text-secondary-dark/[60%] font-body">
                             Chef List
                         </p>
                     )}
@@ -78,7 +86,7 @@ const AdminSideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
                         <ReportIcon className="w-[24px] h-[24px] text-black" />
                     </i>
                     {!isCollapsed && (
-                        <p className="text-[14px] font-regular font-body leading-[20px] dark:text-text-secondary-dark/[60%] font-body">
+                        <p className="text-[16px] font-regular font-body leading-[20px] dark:text-text-secondary-dark/[60%] font-body">
                             Reports
                         </p>
                     )}
@@ -96,7 +104,7 @@ const AdminSideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
                         <LoverIcon className="w-[24px] h-[24px] text-black" />
                     </i>
                     {!isCollapsed && (
-                        <p className="text-[14px] font-regular font-body leading-[20px] dark:text-text-secondary-dark/[60%] font-body">
+                        <p className="text-[16px] font-regular font-body leading-[20px] dark:text-text-secondary-dark/[60%] font-body">
                             FoodLover List
                         </p>
                     )}
@@ -120,18 +128,18 @@ const AdminSideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
                         <CollapseIcon className="w-[24px] h-[24px] text-black" />
                     </i>
                     {!isCollapsed && (
-                        <p className="text-[14px] font-regular font-body leading-[20px] dark:text-text-secondary-dark/[60%] font-body">
+                        <p className="text-[16px] font-regular font-body leading-[20px] dark:text-text-secondary-dark/[60%] font-body">
                             Collapse
                         </p>
                     )}
                 </div>
 
-                <div className="flex items-center gap-x-[16px] cursor-pointer">
+                <div className="flex items-center gap-x-[16px] cursor-pointer" onClick={handleLogout}>
                     <i>
                         <LogoutIcon className="w-[24px] h-[24px] text-black" />
                     </i>
                     {!isCollapsed && (
-                        <p className="text-[14px] font-regular font-body leading-[20px] dark:text-text-secondary-dark/[60%] font-body">
+                        <p className="text-[16px] font-regular font-body leading-[20px] dark:text-text-secondary-dark/[60%] font-body">
                             Logout
                         </p>
                     )}
@@ -144,12 +152,13 @@ const AdminSideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
                         className="w-[24px] h-[24px] rounded-full"
                     />
                     {!isCollapsed && (
-                        <p className="text-[14px] font-regular font-body leading-[20px] dark:text-text-secondary-dark/[60%] font-body">
+                        <p className="text-[16px] font-regular font-body leading-[20px] dark:text-text-secondary-dark/[60%] font-body">
                             Profile
                         </p>
                     )}
                 </div>
             </div>
+            {isModalOpen && <Modal onClose={handleCloseModal} />}
         </div>
     );
 };
