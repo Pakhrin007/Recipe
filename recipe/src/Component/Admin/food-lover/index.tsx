@@ -17,7 +17,13 @@ const FoodLover = () => {
         }
         const data = await response.json();
         console.log("Fetched food lovers:", data);
-        setFoodLovers(data);
+        // Transform data to match expected structure
+        const transformedData = data.map((foodlover: any) => ({
+          id: foodlover.UserId,
+          name: foodlover.Name,
+          email: foodlover.Email,
+        }));
+        setFoodLovers(transformedData);
         setError(null);
       } catch (err) {
         console.error("Failed to fetch food lovers:", err);
@@ -54,9 +60,10 @@ const FoodLover = () => {
       </div>
 
       {/* Table rows */}
-      {currentItems.map((foodlover: any, index: number) => (
-        <div key={foodlover.id} className="flex gap-x-[16px]">
-          <p className="text-[14px] w-[100px]">{indexOfFirstItem + index + 1}</p>
+      {foodLovers.length > 0 &&
+        currentItems.map((foodlover: any, index: number) => (
+          <div key={foodlover.id} className="flex gap-x-[16px]">
+            <p className="text-[14px] w-[100px]">{indexOfFirstItem + index + 1}</p>
           <p className="text-[14px] w-[200px]">{foodlover.name}</p>
           <p className="text-[14px] w-[270px]">{foodlover.email}</p>
           <p className="text-[14px] w-[50px]">

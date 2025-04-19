@@ -23,6 +23,17 @@ const SideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
     const handleCloseModal=()=>{
         SetIsModalOpen(false);
     }
+    const handleConfirmLogout = () => {
+        // Perform logout actions here
+        console.log("Logging out...");
+        
+        // Example: clear auth token (localStorage/sessionStorage), redirect, etc.
+        localStorage.removeItem("authToken"); // or however you're storing it
+        window.location.href = "/login"; // redirect to login page
+    
+        SetIsModalOpen(false);
+    };
+    
 
     return (    
         <div
@@ -158,7 +169,7 @@ const SideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
                     )}
                 </div>
             </div>
-            {isModalOpen && <Modal onClose={handleCloseModal} />}
+            {isModalOpen && <Modal onClose={handleCloseModal} onConfirm={handleConfirmLogout} />}
         </div>
     );
 };

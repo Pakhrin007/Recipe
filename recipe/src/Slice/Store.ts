@@ -1,11 +1,15 @@
-// src/app/store.js
+// src/app/store.ts
 import { configureStore } from '@reduxjs/toolkit';
-import roleReducer from '../Slice/StateSlice';
+import roleReducer from '../Slice/StateSlice'; // Correct import
 
-const store = configureStore({
+export const store = configureStore({
   reducer: {
     role: roleReducer,
   },
 });
+
+// Define RootState and AppDispatch types
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 
 export default store;

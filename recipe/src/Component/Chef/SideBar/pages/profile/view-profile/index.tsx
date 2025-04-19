@@ -14,31 +14,53 @@ interface User {
 
 const ViewProfile = () => {
   const [user, setUser] = useState<User | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const token = getAccessToken(); // Get access token from storage
-        if (!token) return;
+        if (!token) {
+          setError("No access token found");
+          return;
+        }
 
         const userData = await getUserData(token);
+        console.log("Fetched user data:", userData); // Log the raw response
+
+        // Check if userData has the expected fields
+        if (!userData || !userData.Name || !userData.Email) {
+          console.warn("User data missing name or email:", userData);
+          setError("Incomplete user data received");
+          return;
+        }
+
         setUser({
-          name: userData.name,
-          email: userData.email,
-          username: userData.username,
-          phone: userData.phone,
-          tag: "Chef", // You can make this dynamic too
+          name: userData.Name,
+          email: userData.Email,
+          username: userData.Username || "N/A", // Fallback for missing username
+          phone: userData.Phone || "N/A", // Fallback for missing phone
+          tag: userData.Role || "Chef", // Use role from API or fallback
           profilePic: userData.profilePic || pakhrin, // Fallback if no profilePic
+
         });
+        setError(null);
       } catch (err) {
-        console.error("Failed to fetch user profile", err);
+        console.error("Failed to fetch user profile:", err);
+        setError("Failed to load profile. Please try again.");
       }
     };
 
     fetchProfile();
   }, []);
 
-  if (!user) return <p>Loading profile...</p>;
+  if (error) {
+    return <p className="text-red-500">{error}</p>;
+  }
+
+  if (!user) {
+    return <p>Loading profile...</p>;
+  }
 
   return (
     <div className="max-w-4xl p-5 font-sans">
@@ -51,8 +73,8 @@ const ViewProfile = () => {
             className="w-12 h-12 rounded-full mr-5"
           />
           <div>
-            <h2 className="text-2xl font-semibold font-body">{user.name}</h2>
-            <p className="text-gray-600 font-body">{user.email}</p>
+            <h2 className="text-2xl font-semibold font-body">{user.name || "Unknown Name"}</h2>
+            <p className="text-gray-600 font-body">{user.email || "Unknown Email"}</p>
             <span className="inline-block bg-gray-200 text-sm px-3 py-1 rounded-full mt-1">
               {user.tag}
             </span>

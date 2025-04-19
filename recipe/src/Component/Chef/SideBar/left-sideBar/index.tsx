@@ -16,6 +16,8 @@ interface SideBarProps {
 const SideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
     // State to track whether the sidebar is collapsed or not
     const [isCollapsed, setIsCollapsed] = useState(false);
+    
+
 
     return (    
         <div
