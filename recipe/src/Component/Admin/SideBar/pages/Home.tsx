@@ -15,21 +15,23 @@ const Home = () => {
     const fetchCounts = async () => {
       try {
         // Fetch chefs
-        const chefsResponse = await fetch("https://localhost:7136/api/Users?role=Chef");
+        const chefsResponse = await fetch("https://localhost:7043/api/users?type=1");
         if (!chefsResponse.ok) {
           throw new Error(`Failed to fetch chefs: ${chefsResponse.status}`);
         }
         const chefsData = await chefsResponse.json();
-        setTotalChefs(chefsData.length);
-
+        console.log("Parsed chefs data:", chefsData); // Debugging line
+        setTotalChefs(Array.isArray(chefsData) ? chefsData.length : 0);
+    
         // Fetch food lovers
-        const foodLoversResponse = await fetch("https://localhost:7136/api/Users?role=FoodLover");
+        const foodLoversResponse = await fetch("https://localhost:7043/api/users?type=0");
         if (!foodLoversResponse.ok) {
           throw new Error(`Failed to fetch food lovers: ${foodLoversResponse.status}`);
         }
         const foodLoversData = await foodLoversResponse.json();
-        setTotalFoodLovers(foodLoversData.length);
-
+        console.log("Parsed food lovers data:", foodLoversData); // Debugging line
+        setTotalFoodLovers(Array.isArray(foodLoversData) ? foodLoversData.length : 0);
+    
         setError(null);
       } catch (err) {
         console.error("Error fetching counts:", err);

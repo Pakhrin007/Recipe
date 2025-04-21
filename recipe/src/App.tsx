@@ -13,17 +13,17 @@ const App = () => {
       {(() => {
   switch (role) {
 
-    case "FoodLover":
+    case "0":
       return (
         <UserSidebarWrapper/>
       );
 
-    case "Chef":
+    case "1":
       return (
         <ChefSidebarWrapper/>
       );
     
-    case "admin":
+    case "2":
       return (
         <AdminSidebarWrapper/>
       );

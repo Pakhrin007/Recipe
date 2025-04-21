@@ -1,9 +1,8 @@
-// LoginPage.tsx
 import { useState } from 'react';
 import GoogleImage from '../../assets/auth-images/image.png';
 import { setTokens } from '../../Services/JwtServices';
 import { useDispatch } from 'react-redux';
-import { setRoleAndUserId } from '../../Slice/StateSlice'; // Update import
+import { setRoleAndUserId } from '../../Slice/StateSlice';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 
@@ -16,15 +15,14 @@ const LoginPage = ({ isVisible, onClose }: { isVisible: boolean; onClose: () => 
     e.preventDefault();
 
     try {
-      const response = await axios.post('https://localhost:7136/api/auth/login', {
+      const response = await axios.post('https://localhost:7043/api/users/login', {
         email,
         password,
       });
 
       console.log('Full Response:', response.data);
 
-      const accessToken = response.data?.Token;
-      const refreshToken = response.data?.RefreshToken;
+      const accessToken = response.data?.token;
 
       if (!accessToken) {
         console.error('Access token missing from response');
@@ -33,8 +31,8 @@ const LoginPage = ({ isVisible, onClose }: { isVisible: boolean; onClose: () => 
       }
 
       const decodedToken: any = jwtDecode(accessToken);
-      const role = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
-      const userId = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier']; // Extract userId
+      const role = decodedToken['role'];
+      const userId = decodedToken['nameid'];
 
       console.log('Access Token:', accessToken);
       console.log('Decoded Role:', role);
@@ -46,15 +44,15 @@ const LoginPage = ({ isVisible, onClose }: { isVisible: boolean; onClose: () => 
         return;
       }
 
-      setTokens(accessToken, refreshToken); // Save access and refresh tokens
-      dispatch(setRoleAndUserId({ role, userId })); // Store role and userId in Redux
-      localStorage.setItem('token', JSON.stringify({ Token: accessToken }));
+      setTokens(accessToken);
+      dispatch(setRoleAndUserId({ role, userId }));
+      localStorage.setItem('token', JSON.stringify({ token: accessToken }));
 
-      onClose(); // Close modal
+      onClose();
     } catch (error: any) {
       if (error.response) {
         console.error('Login failed:', error.response.data);
-        alert('Invalid email or password');
+        alert(error.response.data.message || 'Login failed: Please check your email and password');
       } else {
         console.error('Login error:', error.message);
         alert('An unexpected error occurred');
@@ -93,9 +91,9 @@ const LoginPage = ({ isVisible, onClose }: { isVisible: boolean; onClose: () => 
             </label>
             <input
               type="text"
-              name="UserName"
+              name="email"
               onChange={(e) => setEmail(e.target.value)}
-              id="UserName"
+              id="email"
               className="w-full p-2 rounded-md border border-gray-300 bg-[#FEFCF8] text-sm sm:text-base"
               placeholder="Enter your E-mail"
               required
@@ -109,7 +107,7 @@ const LoginPage = ({ isVisible, onClose }: { isVisible: boolean; onClose: () => 
               type="password"
               name="password"
               id="password"
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)} // Fixed: Changed setEmail to setPassword
               className="w-full p-2 rounded-md border border-gray-300 bg-[#FEFCF8] text-sm sm:text-base"
               placeholder="Enter your password"
               required

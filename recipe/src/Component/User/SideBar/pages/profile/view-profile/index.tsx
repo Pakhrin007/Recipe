@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import pakhrin from "../../../../../../assets/Images/Pakhrin.jpg";
 import { getUserData } from "../../../../../../Services/UserServices";
 import { getAccessToken } from "../../../../../../Services/JwtServices";
+import { jwtDecode } from "jwt-decode";
 
 interface User {
   name: string;
   email: string;
   username: string;
   phone: string;
-  tag: string;
-  profilePic: string;
+  type: string; // Changed from type to tag
+  profilePic: string | null;
 }
 
 const ViewProfile = () => {
@@ -19,34 +19,58 @@ const ViewProfile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const token = getAccessToken(); // Get access token from storage
+        const token = getAccessToken();
         if (!token) {
-          setError("No access token found");
+          setError("No access token found. Please log in.");
           return;
         }
 
-        const userData = await getUserData(token);
-        console.log("Fetched user data:", userData); // Log the raw response
-
-        // Check if userData has the expected fields
-        if (!userData || !userData.Name || !userData.Email) {
-          console.warn("User data missing name or email:", userData);
-          setError("Incomplete user data received");
+        // Decode JWT to get userId
+        const decodedToken: any = jwtDecode(token);
+        const userId = decodedToken['nameid'];
+        if (!userId) {
+          setError("User ID not found in token.");
           return;
+        }
+
+        console.log("Fetching user data for userId:", userId);
+        const userData = await getUserData(userId, token);
+        console.log("Fetched user data:", userData);
+
+        if (!userData || !userData.name || !userData.email) {
+          console.warn("User data missing name or email:", userData);
+          setError("Incomplete user data received.");
+          return;
+        }
+
+        // Map numeric role to string
+        let role: string;
+        switch (userData.type?.toString()) {
+          case "0":
+            role = "user";
+            break;
+          case "1":
+            role = "chef";
+            break;
+          case "2":
+            role = "admin";
+            break;
+          default:
+            role = "user"; // Fallback
+            console.warn("Invalid role:", userData.type);
         }
 
         setUser({
-          name: userData.Name,
-          email: userData.Email,
-          username: userData.Username || "N/A", // Fallback for missing username
-          phone: userData.Phone || "N/A", // Fallback for missing phone
-          tag: userData.Role || "Chef", // Use role from API or fallback
-          profilePic: userData.profilePic || pakhrin, // Fallback if no profilePic
-
+          name: userData.name,
+          email: userData.email,
+          username: userData.username || "N/A",
+          phone: userData.phone || "N/A",
+          type: role, // Changed from type to tag
+          profilePic: userData.imagePath ? `https://localhost:7043${userData.imagePath}` : null,
         });
         setError(null);
-      } catch (err) {
-        console.error("Failed to fetch user profile:", err);
+      } catch (err: any) {
+        console.error("Failed to fetch user profile:", err.response?.data || err.message);
         setError("Failed to load profile. Please try again.");
       }
     };
@@ -54,23 +78,31 @@ const ViewProfile = () => {
     fetchProfile();
   }, []);
 
-  if (!user) return <p>Loading profile...</p>;
+  if (error) {
+    return <p className="text-red-500">{error}</p>;
+  }
+
+  if (!user) {
+    return <p>Loading profile...</p>;
+  }
 
   return (
     <div className="max-w-4xl p-5 font-sans">
-      <h1 className="text-3xl font-bold mb-5 font-body">View Profile</h1>
+        <h1 className="text-3xl  mb-5 font-body text-red-500 font-title">View Profile</h1>
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center">
-          <img
-            src={user.profilePic}
-            alt="Profile"
-            className="w-12 h-12 rounded-full mr-5"
-          />
-          <div>
-            <h2 className="text-2xl font-semibold font-body">{user.name}</h2>
-            <p className="text-gray-600 font-body">{user.email}</p>
-            <span className="inline-block bg-gray-200 text-sm px-3 py-1 rounded-full mt-1">
-              {user.tag}
+          {user.profilePic && (
+            <img
+              src={user.profilePic}
+              alt="Profile"
+              className="w-14 h-14 rounded-full mr-5"
+            />
+          )}
+          <div className="flex flex-col gap-y-1" >
+            <h2 className="text-2xl font-semibold font-body">{user.name || "Unknown Name"}</h2>
+            <p className="text-gray-600 font-body">{user.email || "Unknown Email"}</p>
+            <span className="inline-block text-black font-body text-[20px] text-center  bg-orange-500  px-3 py-1 rounded-full mt-1">
+              {user.type}
             </span>
           </div>
         </div>
