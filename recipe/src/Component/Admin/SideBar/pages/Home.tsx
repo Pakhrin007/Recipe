@@ -9,7 +9,8 @@ const Home = () => {
   const [totalChefs, setTotalChefs] = useState(0);
   const [totalFoodLovers, setTotalFoodLovers] = useState(0);
   const [error, setError] = useState(null);
-
+  const [totalRecipes, setTotalRecipes] = useState(0);
+  const [totalCategories, setTotalCategories] = useState(0);
   // Fetch data when the component mounts
   useEffect(() => {
     const fetchCounts = async () => {
@@ -22,6 +23,25 @@ const Home = () => {
         const chefsData = await chefsResponse.json();
         console.log("Parsed chefs data:", chefsData); // Debugging line
         setTotalChefs(Array.isArray(chefsData) ? chefsData.length : 0);
+
+        const TotalRecipes = await fetch("https://localhost:7043/api/Recipe/all");
+        if (!TotalRecipes.ok) {
+          throw new Error(`Failed to recipes: ${TotalRecipes.status}`);
+        }
+        const TotalRecipesData = await TotalRecipes.json();
+        console.log("Parsed recipes data:", TotalRecipesData); // Debugging line
+        setTotalRecipes(Array.isArray(TotalRecipesData) ? TotalRecipesData.length : 0);
+
+        const TotalCategories = await fetch("https://localhost:7043/api/Categories");
+        if (!TotalCategories.ok) {
+          throw new Error(`Failed to categories: ${TotalCategories.status}`);
+        }
+        const TotalCategoriesData = await TotalCategories.json();
+        console.log("Parsed categories data:", TotalCategoriesData); // Debugging line
+        setTotalCategories(Array.isArray(TotalCategoriesData) ? TotalCategoriesData.length : 0);
+
+
+        
     
         // Fetch food lovers
         const foodLoversResponse = await fetch("https://localhost:7043/api/users?type=0");
@@ -37,6 +57,8 @@ const Home = () => {
         console.error("Error fetching counts:", err);
         setError("Failed to load data. Please try again later.");
       }
+
+      
     };
 
     fetchCounts();
@@ -78,23 +100,24 @@ const Home = () => {
         <div className="flex gap-x-[16px] w-[180px] h-[100px] bg-[#F2994B]/[21%] rounded-[8px] p-[16px] flex-shrink-0">
           <div className="flex flex-col gap-y-[10px]">
             <p className="text-[16px] font-regular">Total Recipes</p>
-            <p className="text-[24px] font-bold">100</p>
+            <p className="text-[24px] font-bold">{totalRecipes}</p>
           </div>
           <i className="w-[30px] h-[30px] bg-blue-300 flex justify-center items-center rounded-[8px]">
             <ListIcon className="w-[24px] h-[24px]" />
           </i>
         </div>
 
-        {/* Total Reports */}
-        <div className="flex gap-x-[16px] w-[180px] h-[100px] bg-[#F2994B]/[21%] rounded-[8px] p-[16px] flex-shrink-0">
+         {/* Total categories */}
+         <div className="flex gap-x-[16px] w-[200px] h-[100px] bg-[#F2994B]/[21%] rounded-[8px] p-[16px] flex-shrink-0">
           <div className="flex flex-col gap-y-[10px]">
-            <p className="text-[16px] font-regular">Total Reports</p>
-            <p className="text-[24px] font-bold">100</p>
+            <p className="text-[16px] font-regular">Total Categories</p>
+            <p className="text-[24px] font-bold">{totalCategories}</p>
           </div>
-          <i className="w-[30px] h-[30px] bg-[#EEA18C]/[91%] flex justify-center items-center rounded-[8px]">
-            <ReportIcon className="w-[24px] h-[24px]" />
+          <i className="w-[30px] h-[30px] bg-blue-300 flex justify-center items-center rounded-[8px]">
+            <ListIcon className="w-[24px] h-[24px]" />
           </i>
         </div>
+
       </div>
 
       {/* -----------------------Recent Activity-------------------------- */}

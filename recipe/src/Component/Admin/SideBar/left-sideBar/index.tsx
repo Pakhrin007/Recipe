@@ -3,26 +3,23 @@ import HomeIcon from '../../../../assets/icons/HomeIcon';
 import ListIcon from '../../../../assets/icons/ListIcon';
 import CollapseIcon from '../../../../assets/icons/CollapseIcon';
 import LogoutIcon from '../../../../assets/icons/LogoutIcon';
-import ReportIcon from '../../../../assets/icons/ReportIcon';
 import pakhrin from "../../../../assets/Images/Pakhrin.jpg";
 import LoverIcon from '../../../../assets/icons/LoverIcon';
-import Modal from '../../../../UI/Modal';
+import { HeartIcon } from '../../../../assets/icons/HeartIcon';
+import LogoutModal from '../../../../UI/Logout';
+import { useNavigate } from 'react-router-dom';
 interface SideBarProps {
-    pageSelected: "home" | "chef-list" | "reports" | "foodLover-list";
-    setPageSelected: (pageSelected: "home" | "chef-list" | "reports" | "foodLover-list") => void;
+    pageSelected: "home" | "chef-list" | "foodLover-list" | "category";
+    setPageSelected: (pageSelected: "home" | "chef-list"  | "foodLover-list" | "category") => void;
 }
 
 const AdminSideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
     // State to track whether the sidebar is collapsed or not
     const [isCollapsed, setIsCollapsed] = useState(false);
-    const [isModalOpen,SetIsModalOpen]=useState(false);
+    const [showLogoutModal, setShowLogoutModal] = useState(false);
+    const navigate = useNavigate();
 
-    const handleLogout=()=>{
-        SetIsModalOpen(true);
-    }
-    const handleCloseModal=()=>{
-        SetIsModalOpen(false);
-    }
+
     return (
         <div
             className={`flex flex-col justify-between ${
@@ -74,23 +71,7 @@ const AdminSideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
                         </p>
                     )}
                 </div>
-                <div
-                    className={`flex items-center gap-x-[16px] cursor-pointer ${
-                        pageSelected === "reports"
-                            ? "text-red-500 underline underline-offset-4 rounded-[8px]"
-                            : ""
-                    }`}
-                    onClick={() => setPageSelected("reports")}
-                >
-                    <i>
-                        <ReportIcon className="w-[24px] h-[24px] text-black" />
-                    </i>
-                    {!isCollapsed && (
-                        <p className="text-[16px] font-regular font-body leading-[20px] dark:text-text-secondary-dark/[60%] font-body">
-                            Reports
-                        </p>
-                    )}
-                </div>
+                
 
                 <div
                     className={`flex items-center gap-x-[16px] cursor-pointer ${
@@ -101,11 +82,29 @@ const AdminSideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
                     onClick={() => setPageSelected("foodLover-list")}
                 >
                     <i>
-                        <LoverIcon className="w-[24px] h-[24px] text-black" />
+                        <HeartIcon className="w-[24px] h-[24px] text-black" />
                     </i>
                     {!isCollapsed && (
                         <p className="text-[16px] font-regular font-body leading-[20px] dark:text-text-secondary-dark/[60%] font-body">
                             FoodLover List
+                        </p>
+                    )}
+                </div>
+
+                <div
+                    className={`flex items-center gap-x-[16px] cursor-pointer ${
+                        pageSelected === "category"
+                            ? "text-red-500 underline underline-offset-4 rounded-[8px]"
+                            : ""
+                    }`}
+                    onClick={() => setPageSelected("category")}
+                >
+                    <i>
+                        <LoverIcon className="w-[24px] h-[24px] text-black" />
+                    </i>
+                    {!isCollapsed && (
+                        <p className="text-[16px] font-regular font-body leading-[20px] dark:text-text-secondary-dark/[60%] font-body">
+                            Category
                         </p>
                     )}
                 </div>
@@ -134,16 +133,28 @@ const AdminSideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
                     )}
                 </div>
 
-                <div className="flex items-center gap-x-[16px] cursor-pointer" onClick={handleLogout}>
+                <div className="flex items-center gap-x-[16px] cursor-pointer">
                     <i>
                         <LogoutIcon className="w-[24px] h-[24px] text-black" />
                     </i>
                     {!isCollapsed && (
-                        <p className="text-[16px] font-regular font-body leading-[20px] dark:text-text-secondary-dark/[60%] font-body">
+                        <p className="text-[16px] font-regular font-body leading-[20px] dark:text-text-secondary-dark/[60%] cursor-pointer" onClick={() => setShowLogoutModal(true)}>
                             Logout
                         </p>
                     )}
                 </div>
+                {showLogoutModal && (
+                <LogoutModal
+                
+         onConfirm={() => {
+            localStorage.removeItem("token");
+            navigate(   "/");
+            setShowLogoutModal(false);
+        }}
+        onCancel={() => setShowLogoutModal(false)}
+    />
+)}
+
 
                 <div className="flex items-center gap-x-[16px] cursor-pointer">
                     <img
@@ -158,7 +169,6 @@ const AdminSideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
                     )}
                 </div>
             </div>
-            {isModalOpen && <Modal onClose={handleCloseModal} />}
         </div>
     );
 };

@@ -47,7 +47,7 @@ const Chef = () => {
   };
 
   return (
-    <div className="flex flex-col gap-y-[16px]">
+    <div className="flex flex-col gap-y-[16px] w-screen z-10">
       <input
         type="text"
         placeholder="Search"

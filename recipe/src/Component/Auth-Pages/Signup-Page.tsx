@@ -9,28 +9,46 @@ interface SignupPageProps {
   setIsLoginModalOpen: (value: boolean) => void;
 }
 
-const SignupPage = ({ isvisible , onClose, setIsLoginModalOpen }: SignupPageProps) => {
+const SignupPage = ({ isvisible, onClose, setIsLoginModalOpen }: SignupPageProps) => {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [role, setRole] = useState('');
+  const [image, setImage] = useState<File | null>(null);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const type = role === 'FoodLover' ? 0 : 1;
+    const fullName = name || email.trim().split('@')[0];
+
     try {
-      await axios.post('https://localhost:7136/api/auth/register', {
-        name: name || email.trim().split('@')[0],
+      // 1. Register user
+      const registerRes = await axios.post('https://localhost:7043/api/Users/Register', {
         email,
         password,
-        role: role,
-        bio: 'Hello from RecipeNest',
-        profileImage: 'example/login/profile.png',
+        fullName,
+        type,
       });
-      alert('Signup successful');
-      onClose();
-      console.log("Role before signup:", role);
 
-      
+      const userId = registerRes.data.id;
+
+      // 2. Upload profile image if selected
+      if (image) {
+        const formData = new FormData();
+        formData.append("Id", userId.toString());
+        formData.append("fullName", fullName);
+        formData.append("Photo", image);
+
+        await axios.post('https://localhost:7043/api/Users/picture', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      }
+
+      alert('Signup successful!');
+      onClose();
     } catch (error: any) {
       console.error('Signup error:', error.response?.data || error.message);
       alert(error.response?.data?.message || 'Signup failed. Please try again.');
@@ -100,13 +118,23 @@ const SignupPage = ({ isvisible , onClose, setIsLoginModalOpen }: SignupPageProp
               placeholder="Enter your Email"
             />
 
-         
-            <Dropdown 
-            
-            options={['FoodLover', 'Chef']}
+            <label className="text-left text-base sm:text-[20px] mt-2 font-body">
+              Select Role
+            </label>
+            <Dropdown
+              options={['FoodLover', 'Chef']}
+              className="w-full p-2 rounded-md border border-gray-300 bg-[#FEFCF8] text-sm sm:text-base mt-2"
+              onChange={(selectedRole: any) => setRole(selectedRole)}
+            />
 
-            className='w-full p-2 rounded-md  border-gray-300 bg-[#FEFCF8] text-sm sm:text-base mt-2' 
-            onChange={(SelectedRole: any)=>{setRole(SelectedRole)}}
+            <label htmlFor="image" className="text-left text-base sm:text-[20px] mt-2 font-body">
+              Profile Picture
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setImage(e.target.files?.[0] || null)}
+              className="w-full p-2 rounded-md border border-gray-300 bg-[#FEFCF8] text-sm sm:text-base"
             />
 
             <button

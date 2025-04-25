@@ -19,6 +19,7 @@ function AddRecipe() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [servings, setServings] = useState(1);
   const [difficulty, setDifficulty] = useState('');
+  const [chefName, setChefName] = useState('');
 
   // Fetch categories from the backend
   useEffect(() => {
@@ -33,21 +34,45 @@ function AddRecipe() {
     fetchCategories();
   }, []);
 
-  // Get userId from JWT as fallback
+  // Get userId from Redux or JWT, then fetch chefName
   let userId: string | number = userIdFromRedux;
   const token = getAccessToken();
-  if (!userId && token) {
-    try {
-      const decodedToken: any = jwtDecode(token);
-      userId = decodedToken['nameid'];
-      console.log('Using userId from JWT:', userId);
-    } catch (err) {
-      console.error('Failed to decode JWT:', err);
-    }
-  }
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      if (!userId && token) {
+        try {
+          const decodedToken: any = jwtDecode(token);
+          userId = decodedToken['nameid'];
+          console.log('Using userId from JWT:', userId);
+        } catch (err) {
+          console.error('Failed to decode JWT:', err);
+          setError('Failed to decode token. Please log in again.');
+          return;
+        }
+      }
 
-  // Log userId for debugging
+      if (userId) {
+        try {
+          const response = await axios.get(`https://localhost:7043/api/users/${userId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          setChefName(response.data.name || 'Unknown Chef'); // Adjust based on API response
+          console.log('Fetched chefName:', response.data.name);
+        } catch (err: any) {
+          console.error('Failed to fetch chef name:', err.response?.data || err.message);
+          setError('Failed to fetch chef name. Please log in again.');
+        }
+      }
+    };
+
+    fetchUserDetails();
+  }, [userId, token]);
+
+  // Log userId and chefName for debugging
   console.log('userId:', userId);
+  console.log('chefName:', chefName);
 
   // Add a new ingredient field
   const addIngredient = () => {
@@ -74,7 +99,7 @@ function AddRecipe() {
       setError('At least one instruction is required.');
       return;
     }
-    setInstructions(instructions.filter((_: any, i: number) => i !== index));
+    setInstructions(instructions.filter((_, i) => i !== index));
   };
 
   // Handle form submission
@@ -121,6 +146,11 @@ function AddRecipe() {
       setIsLoading(false);
       return;
     }
+    if (!chefName) {
+      setError('Chef name is missing. Please log in again.');
+      setIsLoading(false);
+      return;
+    }
 
     // Prepare form data per API spec
     const categoryId = parseInt(categoryNames);
@@ -132,14 +162,13 @@ function AddRecipe() {
     formData.append('Servings', servings.toString());
     formData.append('Category', categoryId.toString());
     formData.append('Notes', cookingTip || '');
-    formData.append('CreatedBy', userId.toString()); // String "4" for integer($int32)
-    formData.append('Ingredients', JSON.stringify(ingredients)); // JSON string
-    formData.append('Instructions', JSON.stringify(instructions)); // JSON string of array
-
-    // Add file upload
+    formData.append('CreatedBy', userId.toString());
+    formData.append('CretedByName', chefName);
+    formData.append('Ingredients', JSON.stringify(ingredients));
+    formData.append('Instructions', JSON.stringify(instructions));
     const file = fileInputRef.current?.files?.[0];
     if (file) {
-      formData.append('Photo', file); // Binary file
+      formData.append('Photo', file);
     } else {
       setError('Please upload a recipe image.');
       setIsLoading(false);
@@ -152,9 +181,8 @@ function AddRecipe() {
     }
 
     try {
-      // Send the request to the backend
       const response = await axios.post(
-        'https://localhost:7043/api/Recipe/products', // Match API path case
+        'https://localhost:7043/api/Recipe/products',
         formData,
         {
           headers: {
@@ -194,20 +222,18 @@ function AddRecipe() {
   };
 
   return (
-    <div className="add-recipe max-w-screen-lg mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="add-recipe w-screen h-screen px-4 sm:px-6 lg:px-8 py-12 overflow-y-auto scrollbar-hide">
       <header className="text-center">
-        <h1 className="text-3xl font-extrabold text-red-500">Add Recipe</h1>
-        <p className="mt-2 text-sm text-gray-600">Share your culinary masterpiece with our community</p>
+        <h1 className="text-3xl font-extrabold text-red-500 mb-4 font-title">Add Recipe</h1>
+        <p className="mt-2 text-[#333] font-body ">Share your culinary masterpiece with our community</p>
       </header>
 
       <form className="space-y-6 mt-8" onSubmit={handleSubmit}>
-        {/* Error and Loading Messages */}
         {error && <div className="error-message text-red-500 text-sm">{error}</div>}
         {isLoading && <div className="loading-message text-gray-600 text-sm">Submitting recipe...</div>}
 
-        {/* Recipe Title */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">Recipe Title</label>
+          <label className="block text-sm font-medium text-gray-700 font-body">Recipe Title</label>
           <input
             type="text"
             placeholder="Enter Recipe Name"
@@ -219,9 +245,8 @@ function AddRecipe() {
           />
         </div>
 
-        {/* Recipe Description */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">Recipe Description</label>
+          <label className="block text-sm font-medium text-gray-700 font-body">Recipe Description</label>
           <textarea
             placeholder="Brief Description of your Recipe"
             rows={4}
@@ -233,9 +258,8 @@ function AddRecipe() {
           />
         </div>
 
-        {/* Category Dropdown */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">Category</label>
+          <label className="block text-sm font-medium text-gray-700 font-body">Category</label>
           <select
             value={categoryNames}
             onChange={(e) => setCategoryNames(e.target.value)}
@@ -251,9 +275,8 @@ function AddRecipe() {
           </select>
         </div>
 
-        {/* Servings */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">Servings</label>
+          <label className="block text-sm font-medium text-gray-700 font-body">Servings</label>
           <input
             type="number"
             placeholder="Number of servings"
@@ -265,9 +288,8 @@ function AddRecipe() {
           />
         </div>
 
-        {/* Difficulty Dropdown */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">Difficulty</label>
+          <label className="block text-sm font-medium text-gray-700 font-body">Difficulty</label>
           <select
             value={difficulty}
             onChange={(e) => setDifficulty(e.target.value)}
@@ -281,9 +303,8 @@ function AddRecipe() {
           </select>
         </div>
 
-        {/* Ingredients */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">Ingredients</label>
+          <label className="block text-sm font-medium text-gray-700 font-body">Ingredients</label>
           {ingredients.map((ingredient: { name: string; amount: string }, index: number) => (
             <div key={index} className="flex gap-3 mb-3">
               <input
@@ -330,9 +351,8 @@ function AddRecipe() {
           </button>
         </div>
 
-        {/* Instructions */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">Instructions</label>
+          <label className="block text-sm font-medium text-gray-700 font-body">Instructions</label>
           {instructions.map((instruction: string, index: number) => (
             <div key={index} className="flex gap-3 mb-3">
               <input
@@ -366,9 +386,8 @@ function AddRecipe() {
           </button>
         </div>
 
-        {/* Cooking Tip */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">Cooking Tip</label>
+          <label className="block text-sm font-medium text-gray-700 font-body">Cooking Tip</label>
           <textarea
             placeholder="Share your tip for the recipe"
             rows={3}
@@ -379,9 +398,8 @@ function AddRecipe() {
           />
         </div>
 
-        {/* Recipe Image Upload */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">Recipe Image</label>
+          <label className=" text-[#333] font-medium font-body h-10 w-full border border-gray-300 rounded-lg shadow-sm flex items-center justify-center">Recipe Image</label>
           <input
             type="file"
             accept="image/*"
@@ -389,18 +407,11 @@ function AddRecipe() {
             onChange={() => setError(null)}
             required
             className="mt-1 block"
-            
           />
         </div>
 
-        {/* Submit Buttons */}
         <div className="flex justify-between">
-          <button
-            type="button"
-            className="px-4 py-3 bg-gray-200 text-gray-700 rounded-lg shadow hover:bg-gray-300"
-          >
-            Save Draft
-          </button>
+       
           <button
             type="submit"
             className="px-4 py-3 bg-green-600 text-white rounded-lg shadow hover:bg-green-700"

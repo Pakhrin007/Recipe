@@ -5,21 +5,24 @@ import ListIcon from '../../../../assets/icons/ListIcon';
 import FAQIcon from '../../../../assets/icons/FAQIcon';
 import CollapseIcon from '../../../../assets/icons/CollapseIcon';
 import LogoutIcon from '../../../../assets/icons/LogoutIcon';
-import { HeartIcon } from '../../../../assets/icons/HeartIcon';
 import AddIcon from '../../../../assets/icons/AddIcon';
 import pakhrin from '../../../../assets/images/Pakhrin.jpg';
+import LogoutModal from '../../../../UI/Logout';    
+import { useNavigate } from 'react-router-dom';
 interface SideBarProps {
-    pageSelected: "home" | "chef-list" | "favourites" | "my-list" | "FAQ" | "add-recipe" | "profile";
-    setPageSelected: (pageSelected: "home" | "chef-list" | "favourites" | "my-list" | "FAQ" | "add-recipe" | "profile") => void;
+    pageSelected: "home" | "chef-list" | "my-list" | "FAQ" | "add-recipe" | "profile";
+    setPageSelected: (pageSelected: "home" | "chef-list" |  "my-list" | "FAQ" | "add-recipe" | "profile") => void;
 }
 
 const SideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
     // State to track whether the sidebar is collapsed or not
     const [isCollapsed, setIsCollapsed] = useState(false);
-    
+    const [showLogoutModal, setShowLogoutModal] = useState(false);
+    const navigate = useNavigate();
 
 
-    return (    
+    return (        
+        
         <div
             className={`flex flex-col justify-between  h-screen backdrop-blur-2xl  ${
                 isCollapsed ? "min-w-[60px]" : "min-w-[180px]"
@@ -72,23 +75,6 @@ const SideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
                     )}
                 </div>
 
-                <div
-                    onClick={() => setPageSelected("favourites")}
-                    className={`flex items-center gap-x-[8px] cursor-pointer ${
-                        pageSelected === "favourites"
-                            ? "text-red-500 underline underline-offset-4 rounded-[8px]"
-                            : ""
-                    }`}
-                >
-                    <i>
-                        <HeartIcon className="w-[24px] h-[24px]" />
-                    </i>
-                    {!isCollapsed && (
-                        <p className="text-[16px] font-regular font-body leading-[20px] dark:text-text-secondary-dark/[60%]">
-                            Favourites
-                        </p>
-                    )}
-                </div>
 
                 <div
                     className={`flex items-center gap-x-[16px] cursor-pointer ${
@@ -165,11 +151,23 @@ const SideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
                         <LogoutIcon className="w-[24px] h-[24px] text-black" />
                     </i>
                     {!isCollapsed && (
-                        <p className="text-[16px] font-regular font-body leading-[20px] dark:text-text-secondary-dark/[60%]">
+                        <p className="text-[16px] font-regular font-body leading-[20px] dark:text-text-secondary-dark/[60%] cursor-pointer" onClick={() => setShowLogoutModal(true)}>
                             Logout
                         </p>
                     )}
                 </div>
+                {showLogoutModal && (
+                <LogoutModal
+                
+         onConfirm={() => {
+            localStorage.removeItem("token");
+            navigate(   "/");
+            setShowLogoutModal(false);
+        }}
+        onCancel={() => setShowLogoutModal(false)}
+    />
+)}
+
 
                 <div className="flex items-center gap-x-[16px] cursor-pointer" onClick={() => setPageSelected("profile")}>
                     <img

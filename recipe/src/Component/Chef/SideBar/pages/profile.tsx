@@ -5,7 +5,7 @@ const Profile = () => {
     const [isactiveTab,setActiveTab]=useState("manage-account")
 
     return (
-        <div className="w-full h-full gap-y-[24px] px-[16px] py-[16px] flex flex-col">
+        <div className="w-screen h-full gap-y-[24px] px-[16px] py-[16px] flex flex-col">
             <div  className="">
                 <h1 className="mt-2 text-[20px] font-medium">Profile</h1>
             </div>

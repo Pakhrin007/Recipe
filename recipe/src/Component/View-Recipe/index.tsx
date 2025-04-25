@@ -1,174 +1,160 @@
-import ChevronLeftIcon from "../../assets/icons/ChevLeftIcon";
-import chef from "../../assets/Images/chef.png"
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
-interface ViewRecipeProps {
-    LoveImage: string;
-    commentImage: string;
-    saveImage: string;
-    loveCount: number;
-    commentCount: number;
-    recipeName: string;
-    hatImage: string;
-    recipeImage: string;
-    prepTime: string;
-    difficulty: string;
-    Description: string;
-    tags: string[];
-    ingredients: string[];
-    NutritionalInfo: string[];
-    cookingInstructions: string[];
+function RecipeDetails() {
+  const { id } = useParams();
+  const [recipe, setRecipe] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [comments, setComments] = useState<{ user: string; text: string }[]>([]);
+  const [newComment, setNewComment] = useState("");
+
+  useEffect(() => {
+    const fetchRecipe = async () => {
+      if (!id) {
+        setError("No recipe ID provided");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `https://localhost:7043/api/Recipe/filterId?Id=${id}`,
+          {
+            headers: { Accept: "application/json" },
+          }
+        );
+
+        if (!response.ok) {
+          if (response.status === 404) {
+            throw new Error("Recipe not found");
+          }
+          throw new Error(`Failed to fetch recipe (Status: ${response.status})`);
+        }
+
+        const data = await response.json();
+        const ingredients =
+          typeof data.ingredients === "string"
+            ? JSON.parse(data.ingredients || "[]")
+            : data.ingredients;
+        let instructions =
+          typeof data.instructions === "string"
+            ? JSON.parse(data.instructions || "[]")
+            : data.instructions;
+
+        setRecipe({ ...data, ingredients, instructions });
+      } catch (err: any) {
+        console.error("Error fetching recipe:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRecipe();
+  }, [id]);
+
+  // Simulate adding a comment
+  const handleAddComment = () => {
+    if (newComment.trim() === "") return;
+
+    setComments([
+      ...comments,
+      { user: "Anonymous", text: newComment.trim() },
+    ]);
+    setNewComment("");
+  };
+
+  if (loading) return <p className="text-center">Loading recipe...</p>;
+  if (error) return <p className="text-center text-red-600">Error: {error}</p>;
+  if (!recipe) return <p className="text-center">No recipe found.</p>;
+
+  return (
+    <div className="max-w-6xl mx-auto p-6 bg-gray-100 min-h-screen">
+      {/* Recipe Section */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* Main Content */}
+        <div className="md:col-span-2 bg-white p-6 rounded-lg shadow-md">
+          <h1 className="text-3xl font-bold mb-4">{recipe.title}</h1>
+          <img
+            src={`https://localhost:7043${recipe.imagePath}`}
+            alt={recipe.title}
+            className="w-full h-64 object-cover rounded mb-4"
+          />
+          <p className="mb-2">
+            <strong>Description:</strong> {recipe.description}
+          </p>
+          <p className="mb-2">
+            <strong>Prep Time:</strong> {recipe.prepTime}
+          </p>
+          <p className="mb-2">
+            <strong>Servings:</strong> {recipe.servings}
+          </p>
+          <p className="mb-2">
+            <strong>Difficulty:</strong> {recipe.difficulty}
+          </p>
+          <p className="mb-2">
+            <strong>Notes:</strong> {recipe.notes}
+          </p>
+          <h2 className="text-xl mt-4 mb-2 font-semibold">Ingredients:</h2>
+          <ul className="list-disc ml-6 mb-4">
+            {recipe.ingredients.map(
+              (item: { name: string; amount: string }, index: number) => (
+                <li key={index}>{`${item.name} - ${item.amount}`}</li>
+              )
+            )}
+          </ul>
+          <h2 className="text-xl mt-4 mb-2 font-semibold">Instructions:</h2>
+          <ol className="list-decimal ml-6">
+            {recipe.instructions.map((step: string, index: number) => (
+              <li key={index}>{step}</li>
+            ))}
+          </ol>
+        </div>
+
+        {/* Comments Section */}
+        <div className="md:col-span-1 bg-white p-6 rounded-lg shadow-md">
+          <h2 className="text-xl font-semibold mb-4">Comments</h2>
+          {/* Comment Input */}
+          <div className="mb-4">
+            <textarea
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              placeholder="Add a comment..."
+              className="w-full p-2 border border-gray-300 rounded resize-none focus:outline-none focus:border-blue-500"
+              rows={3}
+            ></textarea>
+            <button
+              onClick={handleAddComment}
+              className="mt-2 w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-200"
+            >
+              Add Comment
+            </button>
+          </div>
+
+          {/* Display Comments */}
+          <div
+            className="max-h-64 overflow-y-auto space-y-2"
+            style={{ scrollbarWidth: "thin" }}
+          >
+            {comments.length > 0 ? (
+              comments.map((comment: { user: string; text: string }, index: number) => (
+                <div
+                  key={index}
+                  className="p-3 bg-gray-50 rounded border border-gray-200"
+                >
+                  <p className="font-semibold">{comment.user}</p>
+                  <p>{comment.text}</p>
+                </div>
+              ))
+            ) : (
+              <p className="text-center text-gray-500">No comments yet.</p>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
-const ViewRecipe = ({
-    recipeName,
-    recipeImage,
-    hatImage,
-    prepTime,
-    difficulty,
-    Description,
-    tags,
-    ingredients,
-    NutritionalInfo,
-    cookingInstructions,
-    LoveImage,
-    commentImage,
-    loveCount,
-    commentCount,
-    saveImage,
-}: ViewRecipeProps) => {
-    return (
-        <div className="flex flex-col gap-y-4 px-18 py-6">
-            {/* ---------------------Back button--------------------- */}
-            <div className="flex items-center gap-x-6">
-                <div className="relative flex justify-center items-center h-10 w-10 rounded-full bg-[#BE1E1E]/[56%]">
-                    <ChevronLeftIcon className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
-                </div>
-                <p className="text-[20px] leading-[24px] font-medium">Back to Recipe List</p>
-            </div>
-
-            <div className="relative w-full h-[450px]">
-                <img src={recipeImage} alt={recipeName} className="h-[90%] w-[95.8%] mt-4" />
-                <img
-                    src={saveImage}
-                    alt={recipeName}
-                    className="h-[60px] w-[60px] mr-[0px] absolute top-[10px] right-[0px]"
-                />
-            </div>
-            <div className="flex  justify-between items-center pr-18">
-            <div className="flex gap-x-4">
-                <div className="flex gap-x-2 items-center">
-                    <img src={LoveImage} alt="Love"  className="h-[30px] w-[30px]"/>
-                    <p className="text-[20px] leading-[24px] font-medium">{loveCount}</p>
-                </div>
-                <div className="flex gap-x-2 items-center">
-                    <img src={commentImage} alt="Comment"  className="h-[30px] w-[30px]"/>
-                    <p className="text-[20px] leading-[24px] font-medium">{commentCount}</p>
-                </div>
-            
-
-            </div>
-            {/* ------------------------recipe name----------------------- */}
-            <div className="flex flex-col gap-y-2 ">
-            <h1 className="text-[30px] leading-[36px] text-[#BE1E1E]/[56%]">Let's cook</h1>
-            <p className="text-[20px] leading-[24px] ">{recipeName}</p>
-
-            </div>
-            <div className="flex gap-x-4 items-center pl-10">
-                <img src={hatImage} alt="Hat" className="h-[90px] w-[90px]"/>
-                <div className="flex flex-col gap-y-2">
-                <h1 className="text-[30px] leading-[36px] text-[#BE1E1E]/[56%]">Prep Time</h1>
-                <p className="text-[20px] leading-[24px] ">{prepTime}</p>
-            </div>
-            </div>
-            
-            <div className="flex gap-x-4 items-center pl-10">
-                <img src={hatImage} alt="Hat" className="h-[90px] w-[90px]"/>
-                <div className="flex flex-col gap-y-2">
-                <h1 className="text-[30px] leading-[36px] text-[#BE1E1E]/[56%]">Difficulty</h1>
-                <p className="text-[20px] leading-[24px] ">{difficulty}</p>
-            </div>
-            </div>
-          
-          
-            </div>
-            {/* -----------------description----------------- */}
-            <div className="bg-gray-100 rounded-[31px] p-[20px] w-[95.8%]">
-                <p className="text-poppins text-[18px] leading-[24px]">{Description}</p>
-            </div>
-            {/* --------------------Tags-------------------- */}
-
-            <div className="bg-gray-100 rounded-[31px] p-[20px] w-[95.8%] gap-y-2">
-                <h1 className="text-[20px] leading-[24px] font-medium text-[#FF1313]">Tags:</h1>
-                <div className="flex gap-x-2">
-                    {tags.map((tag, index) => (
-                        <p key={index} className="text-[18px] leading-[24px]">{tag}</p>
-                ))}
-                </div>
-            </div>
-
-            <div>
-                   {/* ---------------------Ingredients and Nutritional Info--------------------- */}
-            <div className="flex gap-x-4">
-                {/* Ingredients */}
-                <div className="bg-white p-4 rounded-lg shadow-md w-full md:w-1/2">
-                    <h2 className="text-red-500 text-xl font-bold mb-2">Ingredients:</h2>
-                    <ul className="list-disc pl-5">
-                        {ingredients.map((ingredient, index) => (
-                            <li key={index} className="text-base leading-6">
-                                {ingredient}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-
-                {/* Nutritional Info */}
-                <div className="bg-white p-4 rounded-lg shadow-md w-full md:w-1/2">
-                    <h2 className="text-red-500 text-xl font-bold mb-2">Nutritional Info:</h2>
-                    <ul className="list-none pl-5">
-                        {NutritionalInfo.map((info, index) => (
-                            <li key={index} className="text-base leading-6">
-                                {info}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            </div>
-
-                {/* ---------------------Cooking Instructions--------------------- */}
-            <div className="flex w-full justify-between ">
-                <div className="bg-white p-4 rounded-lg shadow-md mt-6 w-[70.8%] flex flex-col gap-y-2 flex-wrap">
-                <h2 className="text-red-500 text-[20px] leading-[24px] font-medium mb-2">Cooking Instructions:</h2>
-                <ol className="list-decimal pl-5">
-                    {cookingInstructions.map((instruction, index) => (
-                        <li key={index} className="text-base leading-6">
-                            {instruction}
-                        </li>
-                    ))}
-                </ol>
-                     </div>
-
-                     <div className="h-[300px] -z-10 w-[350px] bg-gray-100 rounded-[31px] relative">
-                        <img src={chef} alt="Chef" className="h-[300px] w-[350px]"/>
-                        <p className="text-[20px] leading-[24px] font-medium absolute top-[200px] left-[30px]">
-                            Chef
-                        </p>
-
-                     </div>
-
-                </div>
-        
-
-               
-            </div>
-            <div className="flex justify-between items-center">
-                <h1 className="text-[20px] leading-[24px] font-medium text-[#BE1E1E]/[56%]">
-                    Recipe Reviews
-                </h1>
-                
-                    
-            </div>
-        </div>
-    );
-};
-
-export default ViewRecipe;
+export default RecipeDetails;

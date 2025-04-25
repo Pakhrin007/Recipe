@@ -110,10 +110,10 @@ const MyList = () => {
     }
 
     return (
-        <div className="h-screen bg-gray-100 overflow-y-auto">
-            <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-                <h1 className="text-4xl font-extrabold text-gray-900 text-center mb-12 tracking-tight">
-                    My Culinary Creations
+        <div className="h-screen overflow-y-auto p-x-12 w-full flex gap-8 flex-col w-screen">
+            <div className="max-w-7xl flex  gap-8 py-12 px-4 sm:px-6 lg:px-8 flex-col">
+                <h1 className="text-4xl font-extrabold text-gray-900 text-center mb-12 tracking-tight font-title">
+                    My Recipes
                 </h1>
                 {recipes.length === 0 ? (
                     <div className="text-center py-12 bg-white rounded-lg shadow-md">
@@ -128,7 +128,8 @@ const MyList = () => {
                         </a>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-[50px] gap-y-12 ">
+
                         {recipes.map((recipe: RecipeDTO) => {
                             const ingredients = JSON.parse(recipe.ingredients);
                             // Handle double-serialized instructions
@@ -144,13 +145,13 @@ const MyList = () => {
                             return (
                                 <div
                                     key={recipe.id}
-                                    className="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl animate-fade-in"
+                                    className="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl animate-fade-in w-[350px] h-[700px] flex flex-col"
                                 >
                                     {recipe.imagePath ? (
                                         <img
                                             src={`https://localhost:7043${recipe.imagePath}`}
                                             alt={recipe.title}
-                                            className="w-full h-48 object-cover rounded-t-xl"
+                                            className=" h-48 object-cover rounded-t-xl"
                                         />
                                     ) : (
                                         <div className="w-full h-48 bg-gray-200 flex items-center justify-center rounded-t-xl">
@@ -158,27 +159,24 @@ const MyList = () => {
                                         </div>
                                     )}
                                     <div className="p-6">
-                                        <h3 className="text-xl font-bold text-gray-900 truncate">{recipe.title}</h3>
-                                        <p className="mt-2 text-gray-600 line-clamp-3">{recipe.description}</p>
-                                        <p className="mt-3 text-sm text-gray-500">
-                                            <span className="font-medium text-gray-700">Created by User:</span>{' '}
-                                            {recipe.userId || 'Unknown'}
+                                        <h3 className="text-xl font-bold text-gray-900 truncate font-body">{recipe.title}</h3>
+                                        <p className="mt-2 text-gray-600 line-clamp-3 font-body">{recipe.description}</p>
+                            
+                                        <p className="mt-1 text-sm text-gray-500">
+                                            <span className="font-medium text-gray-700 font-body    ">Time:</span> {recipe.prepTime}
                                         </p>
                                         <p className="mt-1 text-sm text-gray-500">
-                                            <span className="font-medium text-gray-700">Time:</span> {recipe.prepTime}
+                                            <span className="font-medium text-gray-700 font-body">Servings:</span> {recipe.servings}
                                         </p>
                                         <p className="mt-1 text-sm text-gray-500">
-                                            <span className="font-medium text-gray-700">Servings:</span> {recipe.servings}
-                                        </p>
-                                        <p className="mt-1 text-sm text-gray-500">
-                                            <span className="font-medium text-gray-700">Difficulty:</span> {recipe.difficulty}
+                                            <span className="font-medium text-gray-700 font-body">Difficulty:</span> {recipe.difficulty}
                                         </p>
                                         <div className="mt-4">
-                                            <h4 className="text-lg font-semibold text-gray-900">Ingredients</h4>
+                                            <h4 className="text-lg font-semibold text-gray-900 font-body">Ingredients</h4>
                                             {ingredients.length === 0 ? (
                                                 <p className="text-gray-500 text-sm mt-1">No ingredients listed.</p>
                                             ) : (
-                                                <ul className="list-disc pl-5 mt-2 text-gray-600 text-sm">
+                                                <ul className="list-disc pl-5 mt-2 text-gray-600 text-sm font-body">
                                                     {ingredients.map((ingredient: IngredientDTO, index: number) => (
                                                         <li key={index} className="mt-1">
                                                             {ingredient.name} {ingredient.amount ? `(${ingredient.amount})` : ''}
@@ -188,11 +186,11 @@ const MyList = () => {
                                             )}
                                         </div>
                                         <div className="mt-4">
-                                            <h4 className="text-lg font-semibold text-gray-900">Steps</h4>
+                                            <h4 className="text-lg font-semibold text-gray-900 font-body">Steps</h4>
                                             {instructions.length === 0 ? (
                                                 <p className="text-gray-500 text-sm mt-1">No steps listed.</p>
                                             ) : (
-                                                <ol className="list-decimal pl-5 mt-2 text-gray-600 text-sm">
+                                                <ol className="list-decimal pl-5 mt-2 text-gray-600 text-sm font-body">
                                                     {instructions.map((step: string, index: number) => (
                                                         <li key={index} className="mt-1">{step}</li>
                                                     ))}
@@ -200,25 +198,18 @@ const MyList = () => {
                                             )}
                                         </div>
                                         <div className="mt-4">
-                                            <h4 className="text-lg font-semibold text-gray-900">Category</h4>
+                                            <h4 className="text-lg font-semibold text-gray-900 font-body">Category</h4>
                                             <span className="inline-block px-3 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
                                                 {recipe.category}
                                             </span>
                                         </div>
                                         {recipe.notes && (
                                             <div className="mt-4">
-                                                <h4 className="text-lg font-semibold text-gray-900">Notes</h4>
+                                                <h4 className="text-lg font-semibold text-gray-900 font-body">Notes</h4>
                                                 <p className="text-gray-600 text-sm mt-1">{recipe.notes}</p>
                                             </div>
                                         )}
-                                        <div className="mt-6 flex justify-end">
-                                            <a
-                                                href={`/recipe/${recipe.id}`}
-                                                className="text-green-600 font-medium hover:text-green-800 transition duration-150 ease-in-out"
-                                            >
-                                                View Details
-                                            </a>
-                                        </div>
+                                     
                                     </div>
                                 </div>
                             );
