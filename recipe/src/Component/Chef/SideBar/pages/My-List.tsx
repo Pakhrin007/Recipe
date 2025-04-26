@@ -25,10 +25,25 @@ interface RecipeDTO {
     userId?: number; // Optional, as it may be missing
 }
 
+interface EditRecipeForm {
+    id: number;
+    title: string;
+    description: string;
+    prepTime: string;
+    servings: string;
+    difficulty: string;
+    ingredients: IngredientDTO[];
+    instructions: string[];
+    notes: string;
+    categoryId: number;
+}
+
 const MyList = () => {
     const [recipes, setRecipes] = useState<RecipeDTO[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [editRecipe, setEditRecipe] = useState<EditRecipeForm | null>(null);
 
     const userId = useSelector((state: RootState) => state.role.userId);
 
@@ -76,8 +91,42 @@ const MyList = () => {
         fetchRecipes();
     }, [userId]);
 
-    // Parse JSON strings safely
- 
+    // Function to handle recipe deletion
+    const handleDelete = async (recipeId: number) => {
+        if (!window.confirm('Are you sure you want to delete this recipe?')) {
+            return;
+        }
+
+        try {
+            const tokenString = localStorage.getItem('token');
+            if (!tokenString) {
+                throw new Error('Authentication token is missing. Please log in again.');
+            }
+
+            let token;
+            try {
+                token = JSON.parse(tokenString).Token;
+            } catch (parseError) {
+                console.error('Error parsing token:', parseError);
+                throw new Error('Invalid token format. Please log in again.');
+            }
+
+            await axios.delete(`https://localhost:7043/api/Recipe/deleteRecipe/${recipeId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Accept: 'application/json',
+                },
+            });
+
+            setRecipes(recipes.filter((recipe) => recipe.id !== recipeId));
+            alert('Recipe deleted successfully!');
+        } catch (err: any) {
+            console.error('Delete Recipe Error:', err);
+            setError(err.response?.data || err.message || 'Error deleting recipe');
+        }
+    };
+
+    // Function to open the edit modal
 
     if (loading) {
         return (
@@ -110,8 +159,8 @@ const MyList = () => {
     }
 
     return (
-        <div className="h-screen overflow-y-auto p-x-12 w-full flex gap-8 flex-col w-screen">
-            <div className="max-w-7xl flex  gap-8 py-12 px-4 sm:px-6 lg:px-8 flex-col">
+        <div className="h-screen overflow-y-auto p-x-12 flex gap-8 flex-col w-screen">
+            <div className="max-w-7xl flex gap-8 py-12 px-4 sm:px-6 lg:px-8 flex-col">
                 <h1 className="text-4xl font-extrabold text-gray-900 text-center mb-12 tracking-tight font-title">
                     My Recipes
                 </h1>
@@ -128,11 +177,9 @@ const MyList = () => {
                         </a>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-[50px] gap-y-12 ">
-
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-[50px] gap-y-12">
                         {recipes.map((recipe: RecipeDTO) => {
                             const ingredients = JSON.parse(recipe.ingredients);
-                            // Handle double-serialized instructions
                             let instructions: string[] = [];
                             try {
                                 const parsed = JSON.parse(recipe.instructions);
@@ -151,7 +198,7 @@ const MyList = () => {
                                         <img
                                             src={`https://localhost:7043${recipe.imagePath}`}
                                             alt={recipe.title}
-                                            className=" h-48 object-cover rounded-t-xl"
+                                            className="h-48 object-cover rounded-t-xl"
                                         />
                                     ) : (
                                         <div className="w-full h-48 bg-gray-200 flex items-center justify-center rounded-t-xl">
@@ -161,9 +208,8 @@ const MyList = () => {
                                     <div className="p-6">
                                         <h3 className="text-xl font-bold text-gray-900 truncate font-body">{recipe.title}</h3>
                                         <p className="mt-2 text-gray-600 line-clamp-3 font-body">{recipe.description}</p>
-                            
                                         <p className="mt-1 text-sm text-gray-500">
-                                            <span className="font-medium text-gray-700 font-body    ">Time:</span> {recipe.prepTime}
+                                            <span className="font-medium text-gray-700 font-body">Time:</span> {recipe.prepTime}
                                         </p>
                                         <p className="mt-1 text-sm text-gray-500">
                                             <span className="font-medium text-gray-700 font-body">Servings:</span> {recipe.servings}
@@ -209,7 +255,19 @@ const MyList = () => {
                                                 <p className="text-gray-600 text-sm mt-1">{recipe.notes}</p>
                                             </div>
                                         )}
-                                     
+                                        <div className="mt-4 flex gap-4">
+                                            <button
+                                                onClick={() => handleDelete(recipe.id)}
+                                                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-150 ease-in-out"
+                                            >
+                                                Delete
+                                            </button>
+                                            <button
+                                                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 transition duration-150 ease-in-out"
+                                            >
+                                                Edit
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             );
@@ -217,6 +275,9 @@ const MyList = () => {
                     </div>
                 )}
             </div>
+
+            {/* Edit Recipe Modal */}
+            
         </div>
     );
 };

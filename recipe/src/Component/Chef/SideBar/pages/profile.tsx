@@ -41,7 +41,7 @@ const Profile = () => {
 </div>
 
             {isactiveTab==="manage-account"&&<ViewProfile/>}
-            {isactiveTab==="saved-recipes"&&<SavedRecipe/>}
+            {isactiveTab==="saved-recipes"&&<SavedRecipe recipes={[]}/>}
            
         </div>
     )

@@ -7,6 +7,28 @@ const Chef = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 14;
 
+  const handleSuspend = async (id: number) => {
+    const confirmDelete = window.confirm("Are you sure you want to suspend this chef?");
+    if (!confirmDelete) return;
+  
+    try {
+      const response = await fetch(`https://localhost:7043/api/users/${id}`, {
+        method: "DELETE",
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to suspend chef");
+      }
+  
+      // Remove the deleted chef from local state
+      setChefs((prevChefs: any) => prevChefs.filter((chef: any) => chef.id !== id));
+    } catch (err) {
+      console.error("Error suspending chef:", err);
+      alert("Failed to suspend chef. Please try again later.");
+    }
+  };
+  
+
   // Fetch chefs from API on mount
   useEffect(() => {
     const fetchChefs = async () => {
@@ -70,7 +92,13 @@ const Chef = () => {
           <p className="text-[14px] w-[200px]">{chef.name}</p>
           <p className="text-[14px] w-[270px]">{chef.email}</p>
           <p className="text-[14px] w-[50px]">
-            <button className="bg-red-500 text-white px-2 py-1 rounded">Suspend</button>
+          <button
+  onClick={() => handleSuspend(chef.id)}
+  className="bg-red-500 text-white px-2 py-1 rounded"
+>
+  Suspend
+</button>
+
           </p>
         </div>
       ))}

@@ -7,6 +7,27 @@ const FoodLover = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 15;
 
+  const handleSuspend = async (id: number) => {
+    const confirmDelete = window.confirm("Are you sure you want to suspend this food lover?");
+    if (!confirmDelete) return;
+  
+    try {
+      const response = await fetch(`https://localhost:7043/api/users/${id}`, {
+        method: "DELETE",
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to suspend food lover");
+      }
+  
+      // Remove the deleted chef from local state
+      setFoodLovers((prevFoodLovers: any) => prevFoodLovers.filter((foodlover: any) => foodlover.id !== id));
+    } catch (err) {
+      console.error("Error suspending food lover:", err);
+      alert("Failed to suspend food lover. Please try again later.");
+    }
+  };
+
   // Fetch data from the API
   useEffect(() => {
     const fetchFoodLovers = async () => {
@@ -70,7 +91,13 @@ const FoodLover = () => {
           <p className="text-[14px] w-[200px]">{foodlover.name}</p>
           <p className="text-[14px] w-[270px]">{foodlover.email}</p>
           <p className="text-[14px] w-[50px]">
-            <button className="bg-red-500 text-white px-2 py-1 rounded">Suspend</button>
+          <button
+  onClick={() => handleSuspend(foodlover.id)}
+  className="bg-red-500 text-white px-2 py-1 rounded"
+>
+  Suspend
+</button>
+
           </p>
         </div>
       ))}

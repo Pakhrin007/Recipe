@@ -4,14 +4,13 @@ import ContactIcon from '../../../../assets/icons/ContactIcon';
 import FAQIcon from '../../../../assets/icons/FAQIcon';
 import CollapseIcon from '../../../../assets/icons/CollapseIcon';
 import LogoutIcon from '../../../../assets/icons/LogoutIcon';
-import { HeartIcon } from '../../../../assets/icons/HeartIcon';
 import pakhrin from '../../../../assets/images/Pakhrin.jpg';
 import Modal from '../../../../UI/Modal';
 import LogoutModal from '../../../../UI/Logout';
 import { useNavigate } from 'react-router-dom';
 interface SideBarProps {
-    pageSelected: "home" | "chef-list" | "favourites"  | "FAQ" | "profile";
-    setPageSelected: (pageSelected: "home" | "chef-list" | "favourites" | "FAQ"| "profile") => void;
+    pageSelected: "home" | "chef-list" | "FAQ" | "profile";
+    setPageSelected: (pageSelected: "home" | "chef-list" | "FAQ"| "profile") => void;
 }
 
 const SideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
@@ -26,8 +25,7 @@ const SideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
         SetIsModalOpen(false);
     }
     const handleConfirmLogout = () => {
-        // Perform logout actions here
-        console.log("Logging out...");
+     
         
         // Example: clear auth token (localStorage/sessionStorage), redirect, etc.
         localStorage.removeItem("authToken"); // or however you're storing it
@@ -89,23 +87,7 @@ const SideBar = ({ pageSelected, setPageSelected }: SideBarProps) => {
                     )}
                 </div>
 
-                <div
-                    onClick={() => setPageSelected("favourites")}
-                    className={`flex items-center gap-x-[8px] cursor-pointer ${
-                        pageSelected === "favourites"
-                            ? "text-red-500 underline underline-offset-4 rounded-[8px]"
-                            : ""
-                    }`}
-                >
-                    <i>
-                        <HeartIcon className="w-[24px] h-[24px]" />
-                    </i>
-                    {!isCollapsed && (
-                        <p className="text-[14px] font-regular font-body leading-[20px] dark:text-text-secondary-dark/[60%] font-body">
-                            Favourites
-                        </p>
-                    )}
-                </div>
+          
 
              
 
